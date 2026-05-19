@@ -22,14 +22,28 @@
 
       <div>
         <p class="font-medium text-slate-600">Project name:</p>
-        <p>!!PLACEHOLDER!! actual name need to be displayed here</p>
+        <p>{{ projectData.name || 'Not set' }}</p>
+      </div>
+
+      <div>
+        <p class="font-medium text-slate-600">Description:</p>
+        <p>{{ projectData.description || 'No description' }}</p>
+      </div>
+
+      <div>
+        <p class="font-medium text-slate-600">Project URL::</p>
+        <p>{{ projectData.projectUrl || 'Not set' }}</p>
       </div>
 
       <div>
         <p class="font-medium text-slate-600">Status:</p>
-        <p>!!PLACEHOLDER!! actual state (public/private) needs to be displayed here</p>
-      </div>
 
+        @if (projectData.isPrivateProject) {
+          <p>Private</p>
+        } @else {
+          <p>Public</p>
+        }
+      </div>
       <div>
         <p class="font-medium text-slate-600">Members:</p>
         <p>!!PLACEHOLDER!! actual members need to be displayed here</p>

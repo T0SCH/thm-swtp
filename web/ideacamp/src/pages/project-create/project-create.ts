@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import {WizardLayout} from '../../components/createProject/wizzard-layout/wizard-layout';
+import {z} from 'zod';
+import {WizardLayout} from '../../components/createProject/wizard-layout/wizard-layout';
 import {Stepper} from '../../components/createProject/stepper/stepper';
+
 import {ProjectGeneralForm} from '../../components/createProject/project-general-form/project-general-form';
 import {ProjectSettingsForm} from '../../components/createProject/project-settings-form/project-settings-form';
 import {ProjectMembersForm} from '../../components/createProject/project-members-form/project-members-form';
 import {ProjectFinishForm} from '../../components/createProject/project-finish-form/project-finish-form';
+
+import {ProjectGeneralData, ProjectSettingsData, ProjectCreateData, projectCreateSchema} from '../../components/createProject/schemas/project-create.schema';
 
 @Component({
   selector: 'app-project-create',
@@ -16,6 +20,9 @@ export class ProjectCreate {
 
   currentStep = 0;
 
+  projectData: Partial<ProjectCreateData> = {};
+
+
   nextStep(){
     if(this.currentStep < 3){
       this.currentStep++;
@@ -26,7 +33,28 @@ export class ProjectCreate {
       this.currentStep--;
     }
   }
-  finishStep(){
-    console.log("Project creating finished.");
+
+  saveGeneralFormAndContinue(data: ProjectGeneralData){
+    this.projectData = {...this.projectData, ...data};
+    this.nextStep();
+  }
+
+  saveSettingsFormAndContinue(data: ProjectSettingsData){
+    this.projectData = {...this.projectData, ...data};
+    this.nextStep();
+  }
+
+  saveSettingsFormAndBack(data: ProjectSettingsData){
+    this.projectData = {...this.projectData, ...data};
+    this.previousStep();
+
+  }
+
+  finishProjectCreation(){
+    const res = projectCreateSchema.safeParse(this.projectData);
+    if(!res.success){
+      console.log('Project validation failed:', z.treeifyError(res.error));
+      return;
+    }
   }
 }

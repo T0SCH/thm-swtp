@@ -6,13 +6,15 @@
 
   @if (currentStep === 0) {
     <app-project-general-form
-      (next)="nextStep()">
+      [initialFormData]="projectData"
+      (next)="saveGeneralFormAndContinue($event)">
     </app-project-general-form>
   }
   @if (currentStep === 1){
     <app-project-settings-form
-      (back)="previousStep()"
-      (next)="nextStep()">
+      [initialFormData]="projectData"
+      (back)="saveSettingsFormAndBack($event)"
+      (next)="saveSettingsFormAndContinue($event)">
     </app-project-settings-form>
   }
 
@@ -25,10 +27,9 @@
 
   @if (currentStep === 3) {
     <app-project-finish-form
+      [projectData]="projectData"
       (back)="previousStep()"
-      (finish)="finishStep()">
+      (finish)="finishProjectCreation()">
     </app-project-finish-form>
   }
-
-
 </app-wizard-layout>
