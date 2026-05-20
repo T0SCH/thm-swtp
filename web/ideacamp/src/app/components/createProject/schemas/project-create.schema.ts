@@ -3,35 +3,39 @@ import {z} from 'zod';
  * The schemas are used to validate the user input in all wizard steps before submitting.
  */
 
+const containsNoQuotes = (value:string) => !value.includes('"') && !value.includes("'");
 
 /**
  * Validation of general project information.
  * 'name' is required. Must contain at least 3 characters and must not exceed 20 characters.
  * 'description' is optional. Must not exceed 500 characters.
+ * Both must not contain quotes.
  */
 export const projectGeneralSchema = z.object({
   name: z.string()
     .trim()
     .min(3, 'Project name must be at least 3 characters.')
-    .max(20, 'Project name must be shorter then 20 characters.'),
+    .max(20, 'Project name must be shorter than 20 characters.')
+    .refine(containsNoQuotes, 'Project name must not contain quotes.'),
 
   description: z.string()
     .trim()
-    .max(500, 'Project description must be shorter then 500 characters.')
+    .max(500, 'Project description must be shorter than 500 characters.')
+    .refine(containsNoQuotes, 'Project description must not contain quotes.')
     .optional()
     .or(z.literal('')),
 });
 
 /**
  * Validation of project settings information.
- * 'projectUrl' is required. Must contain at least 3 characters and must not exceed 30 characters. Must only obtain lowercase, number and hyphens.
+ * 'projectUrl' is required. Must contain at least 3 characters and must not exceed 30 characters. Must only contain lowercase, number and hyphens.
  * 'isPrivateProfile' must be a boolean value.
  */
 export const projectSettingsSchema = z.object({
   projectUrl: z.string()
     .trim()
     .min(3, 'Project url must be at least 3 characters.')
-    .max(30, 'Project url must be shorter then 30 characters.')
+    .max(30, 'Project url must be shorter than 30 characters.')
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/,'Only use lowercase letters, numbers and hyphens. Hyphens are not allowed at the beginning or end.'),
 
   isPrivateProject: z.boolean(),
