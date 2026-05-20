@@ -8,7 +8,16 @@
   "projects": {
     "ideacamp": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css",
+          "type": "component",
+          "inlineStyle": false,
+          "inlineTemplate": false,
+          "skipTests": false,
+          "standalone": true
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
