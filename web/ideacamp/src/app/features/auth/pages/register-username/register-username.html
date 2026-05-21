@@ -1,1 +1,81 @@
-<p>register-username works!</p>
+<div class="page">
+
+  <!-- Header ? -->
+  <header class="header">
+    <span class="header-logo">THM Connect</span>
+  </header>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="register-wrapper">
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="stepper-labels">
+          <span class="label active">Benutzername wählen</span>
+          <span class="label">Passwort setzen</span>
+          <span class="label">E-Mail setzen</span>
+          <span class="label">Profil</span>
+        </div>
+        <div class="stepper-circles">
+          <!-- Step 1 -->
+          <div class="step">
+            <div class="circle active">1</div>
+            <div class="line"></div>
+          </div>
+          <!-- Step 2 -->
+          <div class="step">
+            <div class="circle">2</div>
+            <div class="line"></div>
+          </div>
+          <!-- Step 3 -->
+          <div class="step">
+            <div class="circle">3</div>
+            <div class="line"></div>
+          </div>
+          <!-- Step 4 -->
+          <div class="step">
+            <div class="circle">4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="card">
+        <h2 class="card-title">Benutzername wählen</h2>
+        <p class="card-subtitle">Dies wird dein eindeutiger Benutzername auf der Plattform</p>
+
+        <form [formGroup]="form">
+          <div class="input-group">
+            <input
+              type="text"
+              placeholder="Benutzername eingeben"
+              class="text-input"
+              formControlName="username"
+              [class.input-error]="(form.get('username')?.invalid && form.get('username')?.touched) || serverError"
+            />
+            @if (form.get('username')?.invalid && form.get('username')?.touched) {
+              <span class="error-message">* Benutzername ist erforderlich</span>
+            }
+            @if (serverError) {
+              <span class="error-message">* {{ serverError }}</span>
+            }
+          </div>
+        </form>
+
+        <div class="button-group">
+          <button class="btn btn-secondary" (click)="back()" [disabled]="isLoading">Zurück</button>
+          <button class="btn btn-primary" (click)="continue()" [disabled]="isLoading">
+            @if (isLoading) {
+              <span class="spinner"></span>
+            } @else {
+              Weiter
+            }
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
