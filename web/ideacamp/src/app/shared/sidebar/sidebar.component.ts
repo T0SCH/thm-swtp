@@ -1,11 +1,10 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { SidebarService } from './sidebar.service';
-import { RecentComponent } from './recent/recent.component';
 import { MenuLinkComponent } from './menu-link/menu-link.component';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RecentComponent, MenuLinkComponent],
+  imports: [MenuLinkComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
