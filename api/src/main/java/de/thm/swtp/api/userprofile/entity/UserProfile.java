@@ -4,6 +4,8 @@ import de.thm.swtp.api.users.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "user_profiles")
 @Getter
@@ -14,7 +16,7 @@ import lombok.*;
 public class UserProfile {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @OneToOne
     @MapsId

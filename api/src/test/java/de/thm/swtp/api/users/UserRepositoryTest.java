@@ -4,6 +4,8 @@ import de.thm.swtp.api.userprofile.repository.UserProfileRepository;
 import de.thm.swtp.api.users.entity.User;
 import de.thm.swtp.api.users.repository.UserRepository;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
@@ -72,7 +74,7 @@ class UserRepositoryTest {
     @Test
     void deletingUser_alsoDeletesProfile() {
         User saved = userRepository.save(buildUser());
-        Long userId = saved.getId();
+        UUID userId = saved.getId();
 
         userRepository.delete(saved);
 
