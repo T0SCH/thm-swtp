@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { vi } from 'vitest';
 
 import { AuthService } from './auth.service';
 
@@ -9,15 +10,16 @@ describe('AuthService', () => {
   const events$ = new Subject<void>();
 
   const oauthServiceMock = {
-    configure: () => {},
-    loadDiscoveryDocumentAndTryLogin: () => Promise.resolve(true),
+    // Minimal stub implementing the methods AuthService calls.
+    events: events$.asObservable(),
+    configure: vi.fn(),
+    loadDiscoveryDocumentAndTryLogin: () => Promise.resolve(),
     hasValidAccessToken: () => false,
     getIdentityClaims: () => null,
-    getAccessToken: () => '',
-    initCodeFlow: () => {},
-    logOut: () => {},
-    events: events$.asObservable(),
-  };
+    initCodeFlow: vi.fn(),
+    getAccessToken: () => null,
+    logOut: vi.fn(),
+  } as unknown as Partial<OAuthService>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

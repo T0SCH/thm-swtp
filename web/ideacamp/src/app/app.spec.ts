@@ -8,13 +8,6 @@ import { App } from './app';
 describe('App', () => {
   const events$ = new Subject<void>();
   const oauthServiceMock = {
-    configure: () => {},
-    loadDiscoveryDocumentAndTryLogin: () => Promise.resolve(true),
-    hasValidAccessToken: () => false,
-    getIdentityClaims: () => null,
-    getAccessToken: () => '',
-    initCodeFlow: () => {},
-    logOut: () => {},
     events: events$.asObservable(),
   };
 
