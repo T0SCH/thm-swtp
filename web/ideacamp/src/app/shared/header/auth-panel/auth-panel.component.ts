@@ -15,8 +15,6 @@ export class AuthPanelComponent {
     return this.user().username;
   }
 
-  get imageUrl(): string | null {
-    return null;
-  }
+  readonly imageUrl: string | null = null;
 }
 
