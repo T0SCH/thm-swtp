@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {ProfileInformation} from '../../components/user-profile/profile-information/profile-information'
-import {ProfileBanner} from '../../components/user-profile/profile-banner/profile-banner'
+import {ProfileInformation} from '../../components/profile-information/profile-information'
+import {ProfileBanner} from '../../components/profile-banner/profile-banner'
 
 /** Displays public user profile information.*/
 @Component({

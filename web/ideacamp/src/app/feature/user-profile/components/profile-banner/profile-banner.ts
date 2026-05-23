@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {LocationIcon} from '../../shared/icons/location-icon/location-icon'
-import {FollowersIcon} from '../../shared/icons/followers-icon/followers-icon'
+import {LocationIcon} from '../../../../shared/icons/location-icon/location-icon'
+import {FollowersIcon} from '../../../../shared/icons/followers-icon/followers-icon'
 
 /** Displays the profile banner of the user.*/
 @Component({

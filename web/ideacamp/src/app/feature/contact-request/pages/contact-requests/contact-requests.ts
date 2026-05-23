@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {ContactRequestBox} from '../../components/contact-request/contact-request-box/contact-request-box'
-import {ContactRequest} from '../../components/contact-request/contact-request.model';
+import {ContactRequestBox} from '../../components/contact-request-box/contact-request-box'
+import {ContactRequest} from '../../components/contact-request.model';
 @Component({
   selector: 'app-contact-request',
   standalone: true,

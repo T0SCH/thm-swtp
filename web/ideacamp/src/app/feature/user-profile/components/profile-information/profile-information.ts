@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {EditButton} from '../../shared/edit-button/edit-button';
+import {EditButton} from '../../../../shared/edit-button/edit-button';
 
 /** Stores public user profile information.*/
 @Component({
