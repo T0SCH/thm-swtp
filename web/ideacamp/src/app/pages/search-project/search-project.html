@@ -43,12 +43,11 @@
           />
         </div>
 
-        <p
-          *ngIf="errorMessage"
-          class="mt-2 text-sm text-red-500"
-        >
-          {{ errorMessage }}
-        </p>
+        @if (errorMessage) {
+          <p class="mt-2 text-sm text-red-500">
+            {{ errorMessage }}
+          </p>
+        }
       </div>
     </div>
 
@@ -60,10 +59,8 @@
       </button>
     </div>
 
-    <div
-      *ngIf="searchTerm.trim() !== '' && !errorMessage && filteredProjects.length === 0"
-      class="mt-8 flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm"
-    >
+    @if (searchTerm.trim() !== '' && !errorMessage && filteredProjects.length === 0) {
+    <div class="mt-8 flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
       <!-- Error-Ghost -->
       <div class="mb-8">
         <svg
@@ -103,11 +100,10 @@
         Please check your spelling or try different keywords.
       </p>
     </div>
+    }
 
-    <div
-      *ngIf="filteredProjects.length > 0 && !errorMessage"
-      class="mt-6"
-    >
+    @if (filteredProjects.length > 0 && !errorMessage) {
+    <div class="mt-6">
       <h2 class="mb-4 text-lg font-semibold text-slate-700">
         Results ({{ filteredProjects.length }})
       </h2>
@@ -141,5 +137,6 @@
         </article>
       </div>
     </div>
+    }
   </div>
 </section>
