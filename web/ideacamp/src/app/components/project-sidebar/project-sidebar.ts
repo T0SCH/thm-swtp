@@ -9,6 +9,6 @@ import { TechStack } from '../tech-stack/tech-stack';
   selector: 'app-sidebar',
   standalone: true,
   imports: [MemberList, TagList, Quicklinks, TechStack],
-  templateUrl: './sidebar.html'
+  templateUrl: './project-sidebar.html'
 })
-export class Sidebar {}
+export class ProjectSidebar {}
