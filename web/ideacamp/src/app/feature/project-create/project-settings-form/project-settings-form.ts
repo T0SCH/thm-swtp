@@ -51,8 +51,11 @@ export class ProjectSettingsForm implements OnChanges {
     this.next.emit(res.data);
   }
 
+
   goBack(){
     this.back.emit(this.formData);
   }
+
+
 
 }
