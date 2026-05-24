@@ -1,6 +1,6 @@
 package de.thm.swtp.api.userprofile.controller;
 
-import de.thm.swtp.api.exceptionhandling.exceptions.AccessDeniedException;
+import de.thm.swtp.api.exceptionhandling.exceptions.ProfileAccessDeniedException;
 import de.thm.swtp.api.userprofile.dto.UserProfileRequest;
 import de.thm.swtp.api.userprofile.dto.UserProfileResponse;
 import de.thm.swtp.api.userprofile.entity.UserProfile;
@@ -36,7 +36,7 @@ public class UserProfileController {
             @AuthenticationPrincipal Jwt jwt,
             @RequestBody UserProfileRequest request) {
         verifyOwnership(keycloakId, jwt);
-        return toResponse(userProfileService.updateProfile(keycloakId, request.about(), request.experience()));
+        return toResponse(userProfileService.updateProfile(keycloakId, request.title(), request.location(), request.about(), request.experience()));
     }
 
     @DeleteMapping("/api/users/{keycloakId}/profile")
@@ -48,7 +48,7 @@ public class UserProfileController {
 
     private void verifyOwnership(String keycloakId, Jwt jwt) {
         if (!jwt.getSubject().equals(keycloakId)) {
-            throw new AccessDeniedException();
+            throw new ProfileAccessDeniedException();
         }
     }
 
@@ -57,6 +57,9 @@ public class UserProfileController {
                 .keycloakId(profile.getKeycloakId())
                 .username(profile.getUsername())
                 .email(profile.getEmail())
+                .title(profile.getTitle())
+                .location(profile.getLocation())
+                .followers(profile.getFollowers())
                 .about(profile.getAbout())
                 .experience(profile.getExperience())
                 .build();

@@ -21,6 +21,11 @@ public class UserProfileService {
     @Transactional
     public UserProfile getOrCreateProfile(String keycloakId, String username, String email) {
         return userProfileRepository.findByKeycloakId(keycloakId)
+                .map(existing -> {
+                    existing.setUsername(username);
+                    existing.setEmail(email);
+                    return userProfileRepository.save(existing);
+                })
                 .orElseGet(() -> userProfileRepository.save(
                         UserProfile.builder()
                                 .keycloakId(keycloakId)
@@ -31,8 +36,10 @@ public class UserProfileService {
     }
 
     @Transactional
-    public UserProfile updateProfile(String keycloakId, String about, String experience) {
+    public UserProfile updateProfile(String keycloakId, String title, String location, String about, String experience) {
         UserProfile profile = findOrThrow(keycloakId);
+        profile.setTitle(title);
+        profile.setLocation(location);
         profile.setAbout(about);
         profile.setExperience(experience);
         return userProfileRepository.save(profile);

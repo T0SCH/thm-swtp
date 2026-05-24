@@ -7,6 +7,9 @@ public record UserProfileResponse(
         String keycloakId,
         String username,
         String email,
+        String title,
+        String location,
+        int followers,
         String about,
         String experience
 ) {}

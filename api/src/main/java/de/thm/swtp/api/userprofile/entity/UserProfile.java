@@ -30,6 +30,13 @@ public class UserProfile {
     @Column(unique = true)
     private String email;
 
+    private String title;
+
+    private String location;
+
+    // TODO: followers is not implemented yet — placeholder until a follow system is built
+    private int followers;
+
     @Column(columnDefinition = "TEXT")
     private String about;
 
