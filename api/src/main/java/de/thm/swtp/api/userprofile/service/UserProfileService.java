@@ -14,8 +14,8 @@ public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
 
     @Transactional(readOnly = true)
-    public UserProfile getProfile(String keycloakId) {
-        return findOrThrow(keycloakId);
+    public UserProfile getProfile(String username) {
+        return findOrThrow(username);
     }
 
     @Transactional
@@ -36,8 +36,8 @@ public class UserProfileService {
     }
 
     @Transactional
-    public UserProfile updateProfile(String keycloakId, String title, String location, String about, String experience) {
-        UserProfile profile = findOrThrow(keycloakId);
+    public UserProfile updateProfile(String username, String title, String location, String about, String experience) {
+        UserProfile profile = findOrThrow(username);
         profile.setTitle(title);
         profile.setLocation(location);
         profile.setAbout(about);
@@ -46,12 +46,12 @@ public class UserProfileService {
     }
 
     @Transactional
-    public void deleteProfile(String keycloakId) {
-        userProfileRepository.delete(findOrThrow(keycloakId));
+    public void deleteProfile(String username) {
+        userProfileRepository.delete(findOrThrow(username));
     }
 
-    private UserProfile findOrThrow(String keycloakId) {
-        return userProfileRepository.findByKeycloakId(keycloakId)
-                .orElseThrow(() -> new UserProfileNotFoundException(keycloakId));
+    private UserProfile findOrThrow(String username) {
+        return userProfileRepository.findByUsername(username)
+                .orElseThrow(() -> new UserProfileNotFoundException(username));
     }
 }

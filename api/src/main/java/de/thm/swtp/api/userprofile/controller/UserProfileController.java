@@ -25,29 +25,29 @@ public class UserProfileController {
         return toResponse(userProfileService.getOrCreateProfile(keycloakId, username, email));
     }
 
-    @GetMapping("/api/users/{keycloakId}/profile")
-    public UserProfileResponse getProfile(@PathVariable String keycloakId) {
-        return toResponse(userProfileService.getProfile(keycloakId));
+    @GetMapping("/api/users/{username}/profile")
+    public UserProfileResponse getProfile(@PathVariable String username) {
+        return toResponse(userProfileService.getProfile(username));
     }
 
-    @PutMapping("/api/users/{keycloakId}/profile")
+    @PutMapping("/api/users/{username}/profile")
     public UserProfileResponse updateProfile(
-            @PathVariable String keycloakId,
+            @PathVariable String username,
             @AuthenticationPrincipal Jwt jwt,
             @RequestBody UserProfileRequest request) {
-        verifyOwnership(keycloakId, jwt);
-        return toResponse(userProfileService.updateProfile(keycloakId, request.title(), request.location(), request.about(), request.experience()));
+        verifyOwnership(username, jwt);
+        return toResponse(userProfileService.updateProfile(username, request.title(), request.location(), request.about(), request.experience()));
     }
 
-    @DeleteMapping("/api/users/{keycloakId}/profile")
+    @DeleteMapping("/api/users/{username}/profile")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProfile(@PathVariable String keycloakId, @AuthenticationPrincipal Jwt jwt) {
-        verifyOwnership(keycloakId, jwt);
-        userProfileService.deleteProfile(keycloakId);
+    public void deleteProfile(@PathVariable String username, @AuthenticationPrincipal Jwt jwt) {
+        verifyOwnership(username, jwt);
+        userProfileService.deleteProfile(username);
     }
 
-    private void verifyOwnership(String keycloakId, Jwt jwt) {
-        if (!jwt.getSubject().equals(keycloakId)) {
+    private void verifyOwnership(String username, Jwt jwt) {
+        if (!jwt.getClaimAsString("preferred_username").equals(username)) {
             throw new ProfileAccessDeniedException();
         }
     }
