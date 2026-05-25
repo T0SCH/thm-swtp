@@ -2,18 +2,19 @@ package de.thm.swtp.api.project;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import de.thm.swtp.api.userprofile.entity.UserProfile;
+import java.util.*;
+import org.hibernate.annotations.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "projects")
 @Table(name = "projects")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectEntity {
@@ -32,17 +33,30 @@ public class ProjectEntity {
     private String projectUrl;
 
     @Column(name="is_private", nullable = false)
-    private boolean isPrivateProject;
+    @Builder.Default
+    private boolean isPrivateProject=false;
 
-    // Misses Join to UserEntity for the project-owner. ManyToOne should work.
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private UserProfile owner;
 
-    // Misses Join to UserEntity for project-members. ManyToMany should work.
+    @ManyToMany
+    @JoinTable(
+            name = "project_members",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+
+    @Builder.Default
+    private Set<UserProfile> members = new HashSet<>();
 
     // Misses Join to TagEntity for project-tags. ManyToMany should work.
 
+    @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
