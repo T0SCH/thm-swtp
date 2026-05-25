@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { SearchProject } from './feature/project-search/search-project';
+import { SearchPage } from './feature/search/pages/search-page/search-page';
 import {UserProfile} from './feature/user-profile/pages/user-profile/user-profile';
 import {Impressum} from './feature/legal-notice/pages/impressum';
 import {ContactRequests} from './feature/contact-request/pages/contact-requests/contact-requests';
@@ -12,6 +12,6 @@ export const routes: Routes = [
   {path: 'profile', component: UserProfile},
   {path: 'impressum',component: Impressum},
   {path:'contact-requests', component: ContactRequests},
-  {path: 'searchProject', component: SearchProject},
+  {path: 'search', component: SearchPage},
   {path: 'project',component: ProjectSite}
 ];
