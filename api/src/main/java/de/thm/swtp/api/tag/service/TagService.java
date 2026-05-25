@@ -1,6 +1,7 @@
 package de.thm.swtp.api.tag.service;
 
-import de.thm.swtp.api.tag.domain.Tag;
+
+import de.thm.swtp.api.tag.entity.Tag;
 import de.thm.swtp.api.tag.mapper.TagMapper;
 import de.thm.swtp.api.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
