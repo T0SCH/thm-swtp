@@ -1,7 +1,7 @@
 import { isPlatformBrowser, AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { Observable, defer, of } from 'rxjs';
-import { catchError, map, startWith, tap } from 'rxjs';
+import { catchError, map, startWith } from 'rxjs';
 
 import { ProfileInformation } from '../../components/profile-information/profile-information';
 import { ProfileBanner } from '../../components/profile-banner/profile-banner';
