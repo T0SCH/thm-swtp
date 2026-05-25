@@ -8,7 +8,7 @@ import { ProfileBanner } from '../../components/profile-banner/profile-banner';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { UserProfileModel } from '../../../../models/user-profile.model';
 
-type ProfileViewState = {
+interface ProfileViewState {
   /** Indicates whether the profile request is currently running. */
   isLoading: boolean;
 
@@ -17,7 +17,7 @@ type ProfileViewState = {
 
   /** Contains a error message if loading the profile failed. */
   errorMessage: string;
-};
+}
 
 /** Displays public user profile information.
  *

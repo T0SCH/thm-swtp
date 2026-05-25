@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserProfileModel } from '../models/user-profile.model';
@@ -22,12 +22,8 @@ export class UserProfileService {
   private readonly apiUrl = `${environment.apiUrl}/users`;
 
 
-  /**
-   * Creates the user profile service
-   *
-   * @param http Angular HTTP client used to communicate with the backend
-   */
-  constructor(private readonly http: HttpClient) {}
+  /** Angular HTTP client used to communicate with the backend */
+  private readonly http = inject(HttpClient);
 
   /**
    * Loads the profile of the currently authenticated user
