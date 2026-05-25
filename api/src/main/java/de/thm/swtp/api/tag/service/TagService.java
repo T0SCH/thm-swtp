@@ -26,7 +26,7 @@ public class TagService {
 
     /** Returns a list of all tags filtered by the given name. Name must match.*/
     @Transactional(readOnly = true)
-    public List<Tag> getTagsByCategory(String name){
+    public List<Tag> getTagsName(String name){
         return tagRepository.findByName(name)
                 .stream()
                 .map(TagMapper::toDomain)
