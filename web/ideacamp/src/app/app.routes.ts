@@ -4,7 +4,9 @@ import {UserProfile} from './feature/user-profile/pages/user-profile/user-profil
 import {Impressum} from './feature/legal-notice/pages/impressum';
 import {ContactRequests} from './feature/contact-request/pages/contact-requests/contact-requests';
 import { ProjectSite } from './feature/project-site/project-site';
+import { ProjectCreate } from './feature/project-create/project-create';
 import { SuccessComponent } from './feature/auth/success/success.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'impressum', pathMatch: 'full' },
@@ -13,5 +15,6 @@ export const routes: Routes = [
   {path: 'impressum',component: Impressum },
   {path:'contact-requests', component: ContactRequests },
   {path: 'searchProject', component: SearchProject },
-  {path: 'project',component: ProjectSite }
+  {path: 'project',component: ProjectSite },
+  {path: 'createProject', component: ProjectCreate}
 ];
