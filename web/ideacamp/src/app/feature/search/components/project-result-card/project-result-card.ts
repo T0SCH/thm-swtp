@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ProjectSearchResult } from '../../models/project-search-result.model';
 
 @Component({
