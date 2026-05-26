@@ -1,7 +1,7 @@
-package de.thm.swtp.api.tag.profile;
+package de.thm.swtp.api.tag.controller;
 
-import de.thm.swtp.api.tag.dto.AddProfileTagRequest;
-import de.thm.swtp.api.tag.entity.Tag;
+import de.thm.swtp.api.tag.entity.TagEntity;
+import de.thm.swtp.api.tag.service.ProfileTagService;
 import de.thm.swtp.api.tool.OwnershipVerifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +21,9 @@ public class ProfileTagController {
     private final ProfileTagService profileTagService;
 
     @PostMapping
-    public ResponseEntity<Tag> addTag(@PathVariable String username,
-                                      @AuthenticationPrincipal Jwt jwt,
-                                      @RequestBody AddProfileTagRequest request) {
+    public ResponseEntity<TagEntity> addTag(@PathVariable String username,
+                                            @AuthenticationPrincipal Jwt jwt,
+                                            @RequestBody AddProfileTagRequest request) {
 
         OwnershipVerifier.verify(username, jwt);
 

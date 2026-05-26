@@ -1,7 +1,7 @@
 package de.thm.swtp.api.project;
 
 
-import de.thm.swtp.api.tag.entity.Tag;
+import de.thm.swtp.api.tag.entity.TagEntity;
 import de.thm.swtp.api.userprofile.entity.UserProfile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,9 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "projects")
@@ -53,8 +51,8 @@ public class Project {
 
     // Misses Join to TagEntity for project-tags. ManyToMany should work.
     @ManyToMany
-    @JoinTable(name = "project_tags", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags = new ArrayList<>();
+    @JoinTable(name = "project_tags", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "tag_name"))
+    private Set<TagEntity> tags = new HashSet<>();
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

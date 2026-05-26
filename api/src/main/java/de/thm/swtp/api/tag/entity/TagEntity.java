@@ -18,7 +18,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tag {
+public class TagEntity {
     /** Name of the tag.*/
     @Id
     @Column(nullable = false, length = 30)
@@ -33,7 +33,7 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private Set<UserProfile> userProfiles;
 
-    public Tag(String name) {
+    public TagEntity(String name) {
         this.name = name;
     }
 }
