@@ -11,10 +11,10 @@ import { SuccessComponent } from './feature/auth/success/success.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'impressum', pathMatch: 'full' },
   { path: 'success', component: SuccessComponent },
-  {path: 'profile', component: UserProfile},
-  {path: 'impressum',component: Impressum},
-  {path:'contact-requests', component: ContactRequests},
-  {path: 'searchProject', component: SearchProject},
-  {path: 'project',component: ProjectSite},
+  {path: 'profile', component: UserProfile },
+  {path: 'impressum',component: Impressum },
+  {path:'contact-requests', component: ContactRequests },
+  {path: 'searchProject', component: SearchProject },
+  {path: 'project',component: ProjectSite },
   {path: 'createProject', component: ProjectCreate}
 ];
