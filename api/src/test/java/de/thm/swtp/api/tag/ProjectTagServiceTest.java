@@ -1,6 +1,6 @@
 package de.thm.swtp.api.tag;
 
-import de.thm.swtp.api.project.Project;
+import de.thm.swtp.api.project.ProjectEntity;
 import de.thm.swtp.api.project.ProjectRepository;
 import de.thm.swtp.api.project.exception.ProjectNotFoundException;
 import de.thm.swtp.api.tag.domain.Tag;
@@ -33,7 +33,7 @@ class ProjectTagServiceTest {
     private UUID ownerId;
     private UUID otherUserId;
 
-    private Project project;
+    private ProjectEntity project;
     private UserProfile owner;
 
     @BeforeEach
@@ -50,7 +50,7 @@ class ProjectTagServiceTest {
         owner = new UserProfile();
         owner.setKeycloakId(ownerId);
 
-        project = new Project();
+        project = new ProjectEntity();
         project.setId(projectId);
         project.setOwner(owner);
         project.setTags(new HashSet<>());

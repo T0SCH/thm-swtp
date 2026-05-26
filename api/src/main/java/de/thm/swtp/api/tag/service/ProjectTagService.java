@@ -1,6 +1,6 @@
 package de.thm.swtp.api.tag.service;
 
-import de.thm.swtp.api.project.Project;
+import de.thm.swtp.api.project.ProjectEntity;
 import de.thm.swtp.api.project.ProjectRepository;
 import de.thm.swtp.api.project.exception.ProjectNotFoundException;
 import de.thm.swtp.api.tag.domain.Tag;
@@ -26,7 +26,7 @@ public class ProjectTagService {
     /** Returns a list of all tags assigned to the given project. */
     @Transactional(readOnly = true)
     public List<Tag> getProjectTags(UUID projectId) {
-        Project projectEntity = projectRepository.findById(projectId)
+        ProjectEntity projectEntity = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
 
         return projectEntity.getTags()
@@ -38,7 +38,7 @@ public class ProjectTagService {
     /** Assigns a tag to the given project. If the tag does not exist, then it will be created and then assigned. */
     @Transactional
     public Tag addTagToProject(UUID projectId, String tagName, UUID currentUserId) {
-        Project project = projectRepository.findById(projectId)
+        ProjectEntity project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
 
         checkProjectTagPermission(project, currentUserId);
@@ -57,7 +57,7 @@ public class ProjectTagService {
                 .orElseGet(() -> tagRepository.save(new TagEntity(cleaned)));
     }
 
-    private void checkProjectTagPermission(Project project, UUID currentUserId){
+    private void checkProjectTagPermission(ProjectEntity project, UUID currentUserId){
         UUID ownerId = project.getOwner().getKeycloakId();
 
         if (!ownerId.equals(currentUserId)){
