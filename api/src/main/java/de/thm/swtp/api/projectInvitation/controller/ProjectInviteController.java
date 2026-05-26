@@ -45,7 +45,7 @@ public class ProjectInviteController {
     public ProjectInviteResponse updateInviteStatus(@PathVariable UUID invitationId, @Valid @RequestBody UpdateProjectInviteStatusRequest request, @AuthenticationPrincipal Jwt jwt) {
         UUID currentUserId = UUID.fromString(jwt.getSubject());
         return ProjectInviteResponse.toResponse(
-                projectInviteService.updateInviteStatus(invitationId,request.status(),currentUserId)
+                projectInviteService.updateInviteStatus(invitationId, request.status(), currentUserId)
         );
     }
 

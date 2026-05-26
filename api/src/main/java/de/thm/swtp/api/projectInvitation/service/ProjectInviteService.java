@@ -39,10 +39,10 @@ public class ProjectInviteService {
         UserProfile invitedUserEntity = userProfileRepository.findById(invitedUserId)
                 .orElseThrow(() -> new UserProfileNotFoundException(invitedUserId.toString()));
 
-        checkValidInviteCreation(projectEntity,invitedUserId,senderId);
-        checkNoPendingInviteExists(projectId,invitedUserId);
+        checkValidInviteCreation(projectEntity, invitedUserId, senderId);
+        checkNoPendingInviteExists(projectId, invitedUserId);
 
-        ProjectInviteEntity projectInviteEntity = createPendingInvite(projectEntity,invitedUserEntity,message);
+        ProjectInviteEntity projectInviteEntity = createPendingInvite(projectEntity, invitedUserEntity, message);
 
         ProjectInviteEntity saved = projectInviteRepository.save(projectInviteEntity);
         return ProjectInviteMapper.toDomain(saved);
@@ -64,7 +64,7 @@ public class ProjectInviteService {
                 .orElseThrow(() -> new ProjectInviteNotFoundException(inviteId));
         ProjectInvite invite = ProjectInviteMapper.toDomain(inviteEntity);
 
-        checkInviteStatus(invite,newStatus,currentUserId);
+        checkInviteStatus(invite, newStatus, currentUserId);
         inviteEntity.setStatus(newStatus);
 
         return ProjectInviteMapper.toDomain(inviteEntity);
@@ -87,7 +87,7 @@ public class ProjectInviteService {
 
     private void checkNoPendingInviteExists(UUID projectId, UUID invitedUserId){
         boolean pendingInviteExists = projectInviteRepository
-                .findByProjectIdAndInvitedUserKeycloakIdAndStatus(projectId,invitedUserId, ProjectInviteStatus.PENDING)
+                .findByProjectIdAndInvitedUserKeycloakIdAndStatus(projectId, invitedUserId, ProjectInviteStatus.PENDING)
                 .isPresent();
         if (pendingInviteExists) {
             throw new InvalidProjectInviteException("User already has a pending invitation for this project.");
