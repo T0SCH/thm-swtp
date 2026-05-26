@@ -1,6 +1,5 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpStatusCode } from '@angular/common/http';
 import { Subject, takeUntil, forkJoin } from 'rxjs';
 import { z } from 'zod';
 import { SearchService } from '../../services/search.service';
@@ -72,13 +71,9 @@ export class SearchPage implements OnDestroy {
           this.users = users;
           this.isLoading = false;
         },
-        error: (err) => {
+        error: () => {
           this.isLoading = false;
-          if (err?.status === HttpStatusCode.Unauthorized) {
-            this.errorMessage = 'Please log in to search.';
-          } else {
-            this.errorMessage = 'Search failed. Please try again.';
-          }
+          this.errorMessage = 'Search failed. Please try again.';
         },
       });
   }

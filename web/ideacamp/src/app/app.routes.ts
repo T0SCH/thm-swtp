@@ -5,6 +5,7 @@ import {Impressum} from './feature/legal-notice/pages/impressum';
 import {ContactRequests} from './feature/contact-request/pages/contact-requests/contact-requests';
 import { ProjectSite } from './feature/project-site/project-site';
 import { SuccessComponent } from './feature/auth/success/success.component';
+import { authGuard } from './feature/auth/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'impressum', pathMatch: 'full' },
@@ -12,6 +13,6 @@ export const routes: Routes = [
   {path: 'profile', component: UserProfile},
   {path: 'impressum',component: Impressum},
   {path:'contact-requests', component: ContactRequests},
-  {path: 'search', component: SearchPage},
+  {path: 'search', component: SearchPage, canActivate: [authGuard]},
   {path: 'project',component: ProjectSite}
 ];
