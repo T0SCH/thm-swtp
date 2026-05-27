@@ -16,6 +16,6 @@ export const routes: Routes = [
   {path: 'profile', component: UserProfile, canActivate: [authGuard]},
   {path:'contact-requests', component: ContactRequests, canActivate: [authGuard]},
   {path: 'searchProject', component: SearchProject, canActivate: [authGuard]},
-  {path: 'project',component: ProjectSite, canActivate: [authGuard]},
+  {path: 'project/:id',component: ProjectSite, canActivate: [authGuard]},
   {path: 'createProject', component: ProjectCreate, canActivate: [authGuard]}
 ];
