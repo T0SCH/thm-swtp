@@ -5,15 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b22c7ce-2561-4e1d-9009-e945c54cca5d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/exception/ExceptionOwnerNotFound.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/exception/ExceptionProjectResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/test/java/de/thm/swtp/api/project/ProjectServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/dto/response/DeleteProjectResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/exception/ExceptionProjectAlreadyDeleted.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/exception/ExceptionProjectDeleteNotAllowed.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/exception/ExceptionProjectEditNotAllowed.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/exception/ExceptionProjectNameAlreadyExists.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/exception/ExceptionProjectNotFound.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/exceptionhandling/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/exceptionhandling/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/ProjectController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/ProjectEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/ProjectEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/ProjectRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/ProjectService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/dto/response/ProjectResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/dto/response/ProjectResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/dto/request/UpdateProjectRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/dto/request/UpdateProjectRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/exception/ExceptionProjectResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/de/thm/swtp/api/project/exception/ExceptionProjectResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,61 +49,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="8.784911362700795E-88" />
-      <entry key="S2" value="4.542486079034933E-22" />
-      <entry key="S5" value="6.635131501067569E-9" />
-      <entry key="S10" value="1.6333139077821934E-4" />
-      <entry key="S30" value="0.1620504137707872" />
-      <entry key="S60" value="1.3825029884425946" />
-      <entry key="M2" value="5.762572896975025" />
-      <entry key="M5" value="18.03448918420812" />
-      <entry key="M10" value="32.203565993544025" />
-      <entry key="M15" value="43.05715265764971" />
-      <entry key="M30" value="63.790272115813906" />
-      <entry key="H1" value="81.75279363443738" />
-      <entry key="H2" value="93.91985397686767" />
-      <entry key="H4" value="101.04999580282329" />
-      <entry key="D1" value="107.6136784723791" />
-      <entry key="W1" value="108.80039142124653" />
+      <entry key="MS100" value="1.0954841249045985E-6" />
+      <entry key="MS500" value="0.06636799533343737" />
+      <entry key="S2" value="0.8596651205684291" />
+      <entry key="S5" value="1.8125139171156044" />
+      <entry key="S10" value="2.5132077924165985" />
+      <entry key="S30" value="3.3578776173814147" />
+      <entry key="S60" value="3.995545264166421" />
+      <entry key="M2" value="5.874528665425108" />
+      <entry key="M5" value="10.971149387836457" />
+      <entry key="M10" value="17.907847621243093" />
+      <entry key="M15" value="23.05639311397733" />
+      <entry key="M30" value="31.68290924718982" />
+      <entry key="H1" value="40.63023985198377" />
+      <entry key="H2" value="58.78000890966299" />
+      <entry key="H4" value="87.77914526278519" />
+      <entry key="D1" value="143.5202391637398" />
+      <entry key="W1" value="158.3287854092407" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0001983038077042" />
-      <entry key="S2" value="1.1186679332977092" />
-      <entry key="S5" value="1.4282687488905919" />
-      <entry key="S10" value="1.6976509512243947" />
-      <entry key="S30" value="2.475308423667924" />
-      <entry key="S60" value="4.0381253511946955" />
-      <entry key="M2" value="7.87852876225838" />
-      <entry key="M5" value="19.406246812660306" />
-      <entry key="M10" value="33.89398521943402" />
-      <entry key="M15" value="44.02604550336437" />
-      <entry key="M30" value="61.12936459417677" />
-      <entry key="H1" value="74.42815719502151" />
-      <entry key="H2" value="82.91416318524047" />
-      <entry key="H4" value="87.73588903657601" />
-      <entry key="D1" value="92.08992607166901" />
-      <entry key="W1" value="92.86916051381026" />
+      <entry key="MS500" value="1.0000000000052707" />
+      <entry key="S2" value="1.0024633559762106" />
+      <entry key="S5" value="1.1367605608038398" />
+      <entry key="S10" value="1.5227367375228484" />
+      <entry key="S30" value="2.282644661779762" />
+      <entry key="S60" value="2.688442879097874" />
+      <entry key="M2" value="3.2575759240590147" />
+      <entry key="M5" value="4.980955462215997" />
+      <entry key="M10" value="8.712406494770434" />
+      <entry key="M15" value="11.955052026905733" />
+      <entry key="M30" value="17.86725473497589" />
+      <entry key="H1" value="24.98728943200583" />
+      <entry key="H2" value="40.66835736668494" />
+      <entry key="H4" value="65.487713947302" />
+      <entry key="D1" value="112.41707394115458" />
+      <entry key="W1" value="124.77467681321885" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="6.043669460952457E-8" />
-      <entry key="MS500" value="0.03601623591897533" />
-      <entry key="S2" value="0.5022387862129485" />
-      <entry key="S5" value="1.057111096270661" />
-      <entry key="S10" value="1.4672048709187948" />
-      <entry key="S30" value="2.510659782251151" />
-      <entry key="S60" value="5.294485371535617" />
-      <entry key="M2" value="13.496370045177837" />
-      <entry key="M5" value="37.28766941156103" />
-      <entry key="M10" value="65.96456517822442" />
-      <entry key="M15" value="86.96837109951912" />
-      <entry key="M30" value="124.83962685734058" />
-      <entry key="H1" value="156.13188272975407" />
-      <entry key="H2" value="176.80652892204876" />
-      <entry key="H4" value="188.77129113916587" />
-      <entry key="D1" value="199.70104337305446" />
-      <entry key="W1" value="201.66918274391858" />
+      <entry key="MS100" value="0.010380841416191292" />
+      <entry key="MS500" value="0.4572243135326468" />
+      <entry key="S2" value="1.5892795597913785" />
+      <entry key="S5" value="2.767032519604388" />
+      <entry key="S10" value="3.8970561961198595" />
+      <entry key="S30" value="5.567716933797405" />
+      <entry key="S60" value="6.637916523406718" />
+      <entry key="M2" value="9.096819873558347" />
+      <entry key="M5" value="15.92071978655902" />
+      <entry key="M10" value="26.588130593194773" />
+      <entry key="M15" value="34.981095974184946" />
+      <entry key="M30" value="49.52716266351811" />
+      <entry key="H1" value="65.60154417798023" />
+      <entry key="H2" value="99.43536572301734" />
+      <entry key="H4" value="153.25631597539194" />
+      <entry key="D1" value="255.93426711459628" />
+      <entry key="W1" value="283.1029783630282" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -114,13 +119,18 @@
     &quot;JUnit.ProjectEntityTest.executor&quot;: &quot;Coverage&quot;,
     &quot;JUnit.ProjectServiceTest.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ApiApplication.executor&quot;: &quot;Run&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/create-project&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/delete-project&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -134,7 +144,7 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pathVariables&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\danie\\AppData\\Local\\Programs\\IntelliJ IDEA Ultimate\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\marsl\\AppData\\Local\\Programs\\IntelliJ IDEA Ultimate\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -182,7 +192,10 @@
       <workItem from="1779715395521" duration="2010000" />
       <workItem from="1779719146507" duration="1638000" />
       <workItem from="1779724453244" duration="5019000" />
-      <workItem from="1779802623672" duration="567000" />
+      <workItem from="1779802623672" duration="7824000" />
+      <workItem from="1779821608059" duration="2056000" />
+      <workItem from="1779830333990" duration="1860000" />
+      <workItem from="1779859098954" duration="538000" />
     </task>
     <servers />
   </component>

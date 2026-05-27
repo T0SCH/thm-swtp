@@ -36,6 +36,9 @@ public class ProjectEntity {
     @Builder.Default
     private boolean isPrivateProject=false;
 
+    @Column(name = "delete_at")
+    private LocalDateTime deletedAt;
+
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private UserProfile owner;

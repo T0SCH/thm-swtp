@@ -6,4 +6,6 @@ import java.util.UUID;
 
 interface ProjectRepository extends JpaRepository<ProjectEntity, UUID> {
     boolean existsByName(String name);
+    boolean existsByNameAndIdNot(String name, UUID id);
+
 }
