@@ -1,12 +1,55 @@
 package de.thm.swtp.api.project;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
+
+import de.thm.swtp.api.project.dto.request.*;
+import de.thm.swtp.api.project.dto.response.*;
+import lombok.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
+import java.util.*;
 
 @RestController
+@RequestMapping("/api/projects")
 @RequiredArgsConstructor
 public class ProjectController {
 
     private final ProjectService projectService;
+
+    @PostMapping
+    public ResponseEntity<ProjectResponse> createProject(
+            @RequestBody CreateProjectRequest request,
+            @AuthenticationPrincipal Jwt jwt) {
+        String username = jwt.getClaimAsString("preferred_username");
+        ProjectResponse response = projectService.createProject(request, username);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<DeleteProjectResponse> deleteProject(
+            @PathVariable UUID projectId,
+            @AuthenticationPrincipal Jwt jwt) {
+        String username = jwt.getClaimAsString("preferred_username");
+        DeleteProjectResponse response = projectService.deleteProject(projectId, username);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectResponse> getProject(
+            @PathVariable UUID projectId) {
+        ProjectResponse response = projectService.getProject(projectId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{projectId}")
+    public ResponseEntity<ProjectResponse> editProject(
+            @PathVariable UUID projectId,
+            @RequestBody UpdateProjectRequest request,
+            @AuthenticationPrincipal Jwt jwt) {
+        String username = jwt.getClaimAsString("preferred_username");
+        ProjectResponse response = projectService.editProject(projectId, request, username);
+        return ResponseEntity.ok(response);
+    }
 
 }
