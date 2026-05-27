@@ -12,7 +12,6 @@ import lombok.*;
 import java.util.*;
 import java.time.*;
 
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -138,6 +137,7 @@ public class ProjectService {
                 .build();
     }
 
+    @Transactional
     public ProjectResponse editProject(UUID projectId, UpdateProjectRequest request, String username) {
 
         ProjectEntity project = projectRepository.findById(projectId)
@@ -186,4 +186,3 @@ public class ProjectService {
                 .build();
     }
 }
-
