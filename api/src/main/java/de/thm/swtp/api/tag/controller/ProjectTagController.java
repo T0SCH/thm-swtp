@@ -36,4 +36,11 @@ public class ProjectTagController {
         return TagResponse.toResponse(projectTagService.addTagToProject(projectId, request.name(), currentUserId));
     }
 
+    /** Removes a tag from given project. Only the project owner is allowed to remove tags. */
+    @DeleteMapping("/{tagName}")
+    public ResponseEntity<Void> removeTagFromProject(@PathVariable UUID projectId, @PathVariable String tagName, @AuthenticationPrincipal Jwt jwt) {
+        UUID currentUserId = UUID.fromString(jwt.getSubject());
+        projectTagService.removeTagFromProject(projectId, tagName, currentUserId);
+        return ResponseEntity.noContent().build();
+    }
 }
