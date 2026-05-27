@@ -9,7 +9,7 @@ import org.springframework.http.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/projects")
+@RequestMapping("/api/projects")
 @RequiredArgsConstructor
 public class ProjectController {
 

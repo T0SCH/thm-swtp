@@ -7,6 +7,7 @@ import de.thm.swtp.api.project.exception.*;
 import de.thm.swtp.api.userprofile.entity.UserProfile;
 import de.thm.swtp.api.userprofile.repository.UserProfileRepository;
 
+import jakarta.transaction.*;
 import lombok.*;
 import java.util.*;
 import java.time.*;
@@ -33,7 +34,7 @@ public class ProjectService {
                 .orElseThrow(() -> new ExceptionOwnerNotFound(ownerId));
 
 
-        Set<UserProfile> members = new HashSet<>(
+        List<UserProfile> members = new ArrayList<>(
                 userProfileRepository.findAllById(request.memberIds())
         );
 
@@ -84,7 +85,7 @@ public class ProjectService {
                 .message("Projekt erfolgreich gelöscht.")
                 .build();
     }
-
+    @Transactional
     public ProjectResponse getProject(UUID projectId) {
 
         ProjectEntity project = projectRepository.findById(projectId)
