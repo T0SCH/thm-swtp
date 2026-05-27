@@ -1,0 +1,15 @@
+import { Component, Input } from '@angular/core';
+import { UserSearchResult } from '../../models/user-search-result.model';
+
+@Component({
+  selector: 'app-user-result-card',
+  standalone: true,
+  templateUrl: './user-result-card.html',
+})
+export class UserResultCard {
+  @Input({ required: true }) user!: UserSearchResult;
+
+  get initials(): string {
+    return this.user.username.slice(0, 2).toUpperCase();
+  }
+}

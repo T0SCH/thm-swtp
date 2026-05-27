@@ -7,6 +7,7 @@ import { ProjectSite } from './feature/project-site/project-site';
 import { ProjectCreate } from './feature/project-create/project-create';
 import { SuccessComponent } from './feature/auth/success/success.component';
 import {authGuard} from './feature/auth/auth.guard'
+import { SearchPage } from './feature/search/pages/search-page/search-page';
 
 
 export const routes: Routes = [
@@ -15,7 +16,8 @@ export const routes: Routes = [
   {path: 'impressum',component: Impressum},
   {path: 'profile', component: UserProfile, canActivate: [authGuard]},
   {path:'contact-requests', component: ContactRequests, canActivate: [authGuard]},
-  {path: 'searchProject', component: SearchProject, canActivate: [authGuard]},
   {path: 'project/:projectUrl',component: ProjectSite, canActivate: [authGuard]},
+  {path: 'contact-requests', component: ContactRequests, canActivate: [authGuard]},
+  {path: 'search', component: SearchPage, canActivate: [authGuard]},
   {path: 'createProject', component: ProjectCreate, canActivate: [authGuard]}
 ];
