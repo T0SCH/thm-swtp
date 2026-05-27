@@ -13,7 +13,12 @@ export const serverRoutes: ServerRoute[] = [
   },
 
   {
-    path: 'searchProject',
+    path: 'search',
+    renderMode: RenderMode.Client,
+  },
+
+  {
+    path: 'createProject',
     renderMode: RenderMode.Client,
   },
 
