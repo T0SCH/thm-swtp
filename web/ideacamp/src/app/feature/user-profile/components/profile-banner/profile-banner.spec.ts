@@ -16,10 +16,10 @@ describe('ProfileBanner', () => {
 
     component.profile = {
       keycloakId: '',
-      username: 'Daniel',
+      username: '',
       email: '',
-      title: 'Student',
-      location: 'Dortmund',
+      title: '',
+      location: '',
       followers: 0,
       about: '',
       experience: ''
