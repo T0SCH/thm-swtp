@@ -33,7 +33,7 @@ class ProjectEntityTagServiceTest {
     private UUID ownerId;
     private UUID otherUserId;
 
-    private ProjectEntity projectEntity;
+    private ProjectEntity project;
     private UserProfile owner;
 
     @BeforeEach

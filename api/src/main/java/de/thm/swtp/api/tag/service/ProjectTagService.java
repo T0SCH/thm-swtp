@@ -52,13 +52,13 @@ public class ProjectTagService {
     /** Removes a tag from the given project. Only the project owner is allowed to remove tags. */
     @Transactional
     public void removeTagFromProject(UUID projectId, String tagName, UUID currentUserId) {
-        ProjectEntity projectEntity = projectRepository.findById(projectId)
+        ProjectEntity project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
 
-        checkProjectTagPermission(projectEntity, currentUserId);
+        checkProjectTagPermission(project, currentUserId);
 
         tagRepository.findByNameIgnoreCase(tagName.trim())
-                .ifPresent(tag -> projectEntity.getTags().remove(tag));
+                .ifPresent(tag -> project.getTags().remove(tag));
     }
 
     private TagEntity getOrCreateTag(String tagName) {

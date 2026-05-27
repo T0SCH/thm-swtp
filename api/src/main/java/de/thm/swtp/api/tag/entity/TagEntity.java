@@ -27,7 +27,7 @@ public class TagEntity {
 
     /** List of all projects, where the tag is used.*/
     @ManyToMany(mappedBy = "tags")
-    private Set<ProjectEntity> projectEntities;
+    private Set<ProjectEntity> projects;
 
     /** List of all user profiles, where the tag is used.*/
     @ManyToMany(mappedBy = "tags")
