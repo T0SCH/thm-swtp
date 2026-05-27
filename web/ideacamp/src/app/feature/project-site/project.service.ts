@@ -33,6 +33,10 @@ export class ProjectService {
     return this.http.get<ProjectResponse>(`${this.baseUrl}/${projectId}`);
   }
 
+  getProjectByUrl(projectUrl: string): Observable<ProjectResponse> {
+    return this.http.get<ProjectResponse>(`${this.baseUrl}/by-url/${projectUrl}`);
+  }
+
   updateProject(projectId: string, request: UpdateProjectRequest): Observable<ProjectResponse> {
     return this.http.put<ProjectResponse>(`${this.baseUrl}/${projectId}`, request);
   }

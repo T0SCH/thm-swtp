@@ -84,7 +84,7 @@ export class ProjectCreate {
         this.isLoading = false;
         this.successMessage = 'Projekt erfolgreich erstellt!';
         setTimeout(() => {
-          this.router.navigate(['/project', project.id]);
+          this.router.navigate(['/project', project.projectUrl]);
         }, 1500);
       },
       error: () => {

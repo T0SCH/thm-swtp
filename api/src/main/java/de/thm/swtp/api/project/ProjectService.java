@@ -32,8 +32,10 @@ public class ProjectService {
                 .orElseThrow(() -> new RuntimeException("User profile not found for username: " + username));
 
 
+        Set<UUID> memberIds = Optional.ofNullable(request.memberIds()).orElseGet(Collections::emptySet);
+
         List<UserProfile> members = new ArrayList<>(
-                userProfileRepository.findAllById(request.memberIds())
+                userProfileRepository.findAllById(memberIds)
         );
 
 
@@ -56,7 +58,9 @@ public class ProjectService {
                 .projectUrl(saved.getProjectUrl())
                 .isPrivateProject(saved.isPrivateProject())
                 .ownerId(saved.getOwner().getKeycloakId())
-                .memberIds(request.memberIds())
+                .memberIds(saved.getMembers().stream()
+                        .map(UserProfile::getKeycloakId)
+                        .collect(java.util.stream.Collectors.toSet()))
                 .createdAt(saved.getCreatedAt())
                 .updatedAt(saved.getUpdatedAt())
                 .build();
@@ -102,7 +106,32 @@ public class ProjectService {
                 .isPrivateProject(project.isPrivateProject())
                 .ownerId(project.getOwner().getKeycloakId())
                 .memberIds(project.getMembers().stream()
-                        .map(m -> m.getKeycloakId())
+                        .map(UserProfile::getKeycloakId)
+                        .collect(java.util.stream.Collectors.toSet()))
+                .createdAt(project.getCreatedAt())
+                .updatedAt(project.getUpdatedAt())
+                .build();
+    }
+
+    @Transactional
+    public ProjectResponse getProjectByUrl(String projectUrl) {
+
+        ProjectEntity project = projectRepository.findByProjectUrl(projectUrl)
+                .orElseThrow(() -> new RuntimeException("Kein Projekt mit der URL " + projectUrl + " gefunden."));
+
+        if (project.getDeletedAt() != null) {
+            throw new ExceptionProjectAlreadyDeleted(project.getId());
+        }
+
+        return ProjectResponse.builder()
+                .id(project.getId())
+                .name(project.getName())
+                .description(project.getDescription())
+                .projectUrl(project.getProjectUrl())
+                .isPrivateProject(project.isPrivateProject())
+                .ownerId(project.getOwner().getKeycloakId())
+                .memberIds(project.getMembers().stream()
+                        .map(UserProfile::getKeycloakId)
                         .collect(java.util.stream.Collectors.toSet()))
                 .createdAt(project.getCreatedAt())
                 .updatedAt(project.getUpdatedAt())
@@ -157,5 +186,4 @@ public class ProjectService {
                 .build();
     }
 }
-
 

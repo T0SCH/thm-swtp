@@ -40,14 +40,14 @@ export class ProjectSite  implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      this.errorMessage.set('Keine Projekt-ID angegeben.');
+    const projectUrl = this.route.snapshot.paramMap.get('projectUrl');
+    if (!projectUrl) {
+      this.errorMessage.set('Keine Projekt-URL angegeben.');
       this.isLoading.set(false);
       return;
     }
 
-    this.projectService.getProject(id).subscribe({
+    this.projectService.getProjectByUrl(projectUrl).subscribe({
       next: (data) => {
         this.project.set(data);
         this.isLoading.set(false);
