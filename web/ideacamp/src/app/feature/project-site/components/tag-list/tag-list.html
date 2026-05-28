@@ -13,8 +13,20 @@
 
   <div class="flex flex-wrap gap-2">
     @for (tag of tags(); track tag.name) {
-      <span class="rounded-md bg-slate-600 px-3 py-1 text-xs text-white">
-        {{ tag.name }}
+      <span class="inline-flex items-center gap-2 rounded-md bg-slate-600 px-3 py-1 text-xs text-white">
+        @if (isOwner) {
+          <button
+            type="button"
+            (click)="deleteTag(tag.name)"
+            [disabled]="isDeleting()"
+            class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] transition hover:bg-white/15 disabled:opacity-50"
+            aria-label="Tag löschen"
+          >
+            <i class="pi pi-times"></i>
+          </button>
+        }
+
+        <span>{{ tag.name }}</span>
       </span>
     }
 

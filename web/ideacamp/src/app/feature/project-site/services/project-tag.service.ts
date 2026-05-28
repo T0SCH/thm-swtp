@@ -23,4 +23,8 @@ export class ProjectTagService {
   addTag(projectId: string, request: CreateTagRequest): Observable<TagResponse> {
     return this.http.post<TagResponse>(`${this.baseUrl}/${projectId}/tags`, request);
   }
+
+  deleteTag(projectId: string, tagName: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${projectId}/tags/${encodeURIComponent(tagName)}`);
+  }
 }

@@ -12,6 +12,10 @@ class MockProjectTagService {
   addTag() {
     return of({ name: 'Test' });
   }
+
+  deleteTag() {
+    return of(void 0);
+  }
 }
 
 describe('TagList', () => {

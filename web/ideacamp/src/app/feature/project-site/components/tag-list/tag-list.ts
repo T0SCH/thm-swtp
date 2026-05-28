@@ -21,6 +21,7 @@ export class TagList implements OnInit, OnChanges {
   isLoading = signal(false);
   isAdding = signal(false);
   isSaving = signal(false);
+  isDeleting = signal(false);
   errorMessage = signal<string | null>(null);
   newTagName = signal('');
 
@@ -75,6 +76,26 @@ export class TagList implements OnInit, OnChanges {
       error: () => {
         this.errorMessage.set('Tag konnte nicht gespeichert werden.');
         this.isSaving.set(false);
+      }
+    });
+  }
+
+  deleteTag(tagName: string): void {
+    const projectId = this.projectId;
+    if (!projectId || !this.isOwner) return;
+
+    this.isDeleting.set(true);
+    this.errorMessage.set(null);
+
+    this.projectTagService.deleteTag(projectId, tagName).subscribe({
+      next: () => {
+        const lower = tagName.toLowerCase();
+        this.tags.set(this.tags().filter((tag) => tag.name.toLowerCase() !== lower));
+        this.isDeleting.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Tag konnte nicht gelöscht werden.');
+        this.isDeleting.set(false);
       }
     });
   }
