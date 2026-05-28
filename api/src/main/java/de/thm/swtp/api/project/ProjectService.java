@@ -21,6 +21,22 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserProfileRepository userProfileRepository;
 
+    private ProjectResponse toResponse(ProjectEntity project) {
+        return ProjectResponse.builder()
+                .id(project.getId())
+                .name(project.getName())
+                .description(project.getDescription())
+                .projectUrl(project.getProjectUrl())
+                .isPrivateProject(project.isPrivateProject())
+                .ownerId(project.getOwner().getKeycloakId())
+                .memberIds(project.getMembers().stream()
+                        .map(UserProfile::getKeycloakId)
+                        .collect(java.util.stream.Collectors.toSet()))
+                .createdAt(project.getCreatedAt())
+                .updatedAt(project.getUpdatedAt())
+                .build();
+    }
+
     public ProjectResponse createProject(CreateProjectRequest request, String username) {
 
         if (projectRepository.existsByName(request.name())) {
@@ -50,19 +66,7 @@ public class ProjectService {
         ProjectEntity saved = projectRepository.save(project);
 
 
-        return ProjectResponse.builder()
-                .id(saved.getId())
-                .name(saved.getName())
-                .description(saved.getDescription())
-                .projectUrl(saved.getProjectUrl())
-                .isPrivateProject(saved.isPrivateProject())
-                .ownerId(saved.getOwner().getKeycloakId())
-                .memberIds(saved.getMembers().stream()
-                        .map(UserProfile::getKeycloakId)
-                        .collect(java.util.stream.Collectors.toSet()))
-                .createdAt(saved.getCreatedAt())
-                .updatedAt(saved.getUpdatedAt())
-                .build();
+        return toResponse(saved);
     }
 
     public DeleteProjectResponse deleteProject(UUID projectId, String username) {
@@ -97,19 +101,7 @@ public class ProjectService {
             throw new ExceptionProjectAlreadyDeleted(projectId);
         }
 
-        return ProjectResponse.builder()
-                .id(project.getId())
-                .name(project.getName())
-                .description(project.getDescription())
-                .projectUrl(project.getProjectUrl())
-                .isPrivateProject(project.isPrivateProject())
-                .ownerId(project.getOwner().getKeycloakId())
-                .memberIds(project.getMembers().stream()
-                        .map(UserProfile::getKeycloakId)
-                        .collect(java.util.stream.Collectors.toSet()))
-                .createdAt(project.getCreatedAt())
-                .updatedAt(project.getUpdatedAt())
-                .build();
+        return toResponse(project);
     }
 
     @Transactional
@@ -122,19 +114,7 @@ public class ProjectService {
             throw new ExceptionProjectAlreadyDeleted(project.getId());
         }
 
-        return ProjectResponse.builder()
-                .id(project.getId())
-                .name(project.getName())
-                .description(project.getDescription())
-                .projectUrl(project.getProjectUrl())
-                .isPrivateProject(project.isPrivateProject())
-                .ownerId(project.getOwner().getKeycloakId())
-                .memberIds(project.getMembers().stream()
-                        .map(UserProfile::getKeycloakId)
-                        .collect(java.util.stream.Collectors.toSet()))
-                .createdAt(project.getCreatedAt())
-                .updatedAt(project.getUpdatedAt())
-                .build();
+        return toResponse(project);
     }
 
     @Transactional
@@ -171,18 +151,14 @@ public class ProjectService {
 
         ProjectEntity saved = projectRepository.save(project);
 
-        return ProjectResponse.builder()
-                .id(saved.getId())
-                .name(saved.getName())
-                .description(saved.getDescription())
-                .projectUrl(saved.getProjectUrl())
-                .isPrivateProject(saved.isPrivateProject())
-                .ownerId(saved.getOwner().getKeycloakId())
-                .memberIds(saved.getMembers().stream()
-                        .map(m -> m.getKeycloakId())
-                        .collect(java.util.stream.Collectors.toSet()))
-                .createdAt(saved.getCreatedAt())
-                .updatedAt(saved.getUpdatedAt())
-                .build();
+        return toResponse(saved);
+    }
+
+    @Transactional
+    public List<ProjectResponse> getProjectsByUsername(String username) {
+        return projectRepository.findAllByOwner_UsernameAndDeletedAtIsNullOrderByCreatedAtDesc(username)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 }

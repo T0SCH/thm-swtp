@@ -33,6 +33,11 @@ export const serverRoutes: ServerRoute[] = [
   },
 
   {
+    path: 'my-projects',
+    renderMode: RenderMode.Client,
+  },
+
+  {
     path: '**',
     renderMode: RenderMode.Prerender,
   }
