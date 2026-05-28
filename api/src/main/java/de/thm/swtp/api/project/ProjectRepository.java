@@ -18,6 +18,5 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, UUID> {
      * @param username the username of the project owner
      * @return a list of ProjectEntity objects matching the criteria
      */
-    @SuppressWarnings("checkstyle:MethodName")
-    List<ProjectEntity> findAllByOwner_UsernameAndDeletedAtIsNullOrderByCreatedAtDesc(String username);
+    List<ProjectEntity> findAllByOwnerUsernameAndDeletedAtIsNullOrderByCreatedAtDesc(String username);
 }

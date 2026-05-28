@@ -156,7 +156,7 @@ public class ProjectService {
 
     @Transactional
     public List<ProjectResponse> getProjectsByUsername(String username) {
-        return projectRepository.findAllByOwner_UsernameAndDeletedAtIsNullOrderByCreatedAtDesc(username)
+        return projectRepository.findAllByOwnerUsernameAndDeletedAtIsNullOrderByCreatedAtDesc(username)
                 .stream()
                 .map(this::toResponse)
                 .toList();
