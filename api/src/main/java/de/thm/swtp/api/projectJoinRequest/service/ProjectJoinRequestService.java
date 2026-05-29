@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.EnumSet;
 import java.util.UUID;
 
+/** Service for managing project join-requests. */
 @Service
 @RequiredArgsConstructor
 public class ProjectJoinRequestService {
@@ -26,6 +27,10 @@ public class ProjectJoinRequestService {
     private final UserProfileRepository userProfileRepository;
 
 
+    /** Creates a new join-request for the given project and from the given user.
+     *  Join-request can only be created when the project and the user exist and
+     *  when there are no further active join requests for the same project and user.
+     */
     public ProjectJoinRequest createProjectJoinRequest(UUID projectId, UUID currentUserId, String message){
         ProjectEntity projectEntity = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));

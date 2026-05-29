@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+/** REST controller for managing project join requests. */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/projects/{projectId}/join-requests")
 public class ProjectJoinRequestController {
     private final ProjectJoinRequestService projectJoinRequestService;
 
+    /** Creates a join request to the given project for the given authenticated user. */
     @PostMapping
     public ProjectJoinRequestResponse createProjectJoinRequest(@PathVariable UUID projectId,
                                                                @Valid @RequestBody CreateProjectJoinRequestRequest request,
