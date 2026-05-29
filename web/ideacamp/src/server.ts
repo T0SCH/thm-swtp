@@ -12,8 +12,8 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-// used by Docker HEALTHCHECK
-app.get('/health', (req, res) => res.sendStatus(200));
+app.set('trust proxy', true);                          // required to work behind reverse proxy (prod-env)
+app.get('/health', (req, res) => res.sendStatus(200)); // used by Docker HEALTHCHECK
 
 /**
  * Example Express Rest API endpoints can be defined here.
