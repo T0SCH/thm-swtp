@@ -23,7 +23,7 @@ public class ProjectJoinRequestController {
 
 
     /** Returns all join-requests for the given project. */
-    @GetMapping("/projects{projectId}/join-requests")
+    @GetMapping("/projects/{projectId}/join-requests")
     public List<ProjectJoinRequestResponse> getProjectJoinRequestsForProject(@PathVariable UUID projectId, @AuthenticationPrincipal Jwt jwt) {
         UUID currentUserId = UUID.fromString(jwt.getSubject());
 
