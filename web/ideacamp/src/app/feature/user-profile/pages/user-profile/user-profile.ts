@@ -100,6 +100,11 @@ export class UserProfile implements OnInit {
 
     this.routeUsername = this.route.snapshot.paramMap.get('username') ?? '';
 
+    if (!this.routeUsername) {
+      this.profileState.set({ isLoading: false, profile: null, errorMessage: 'User not found.' });
+      return;
+    }
+
     await this.authService.waitUntilAuthReady();
     this.loadProfile();
   }
