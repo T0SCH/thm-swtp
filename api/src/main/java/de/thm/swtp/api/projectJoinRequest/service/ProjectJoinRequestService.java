@@ -44,7 +44,7 @@ public class ProjectJoinRequestService {
         UserProfile requestingUserEntity = userProfileRepository.findById(currentUserId)
                 .orElseThrow(() -> new UserProfileNotFoundException(currentUserId.toString()));
 
-        if(hasActiveRequests(projectId,currentUserId)){
+        if (hasActiveRequests(projectId, currentUserId)){
             throw new ProjectJoinRequestAlreadyExistsException(projectId);
         }
 
@@ -70,7 +70,7 @@ public class ProjectJoinRequestService {
 
         checkProjectOwner(projectEntity, currentUserId);
 
-        if(joinRequestEntity.getStatus() !=  ProjectJoinRequestStatus.PENDING){
+        if (joinRequestEntity.getStatus() !=  ProjectJoinRequestStatus.PENDING){
             throw new ProjectJoinRequestInvalidStatusForEditException("Only a pending join-request can be accepted.");
         }
 
@@ -95,7 +95,7 @@ public class ProjectJoinRequestService {
 
         checkProjectOwner(projectEntity, currentUserId);
 
-        if(joinRequestEntity.getStatus() !=  ProjectJoinRequestStatus.PENDING){
+        if (joinRequestEntity.getStatus() !=  ProjectJoinRequestStatus.PENDING){
             throw new ProjectJoinRequestInvalidStatusForEditException("Only a pending join-request can be rejected.");
         }
 
@@ -140,7 +140,7 @@ public class ProjectJoinRequestService {
     private void checkProjectOwner(ProjectEntity projectEntity, UUID currentUserId) {
         UUID ownerId = projectEntity.getOwner().getKeycloakId();
 
-        if(!ownerId.equals(currentUserId)){
+        if (!ownerId.equals(currentUserId)){
             throw new ProjectJoinRequestAccessDeniedException("Only the project owner is allowed to manage join-requests.");
         }
     }

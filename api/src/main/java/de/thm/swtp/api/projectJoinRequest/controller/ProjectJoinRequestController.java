@@ -52,7 +52,7 @@ public class ProjectJoinRequestController {
                                                                @Valid @RequestBody CreateProjectJoinRequestRequest request,
                                                                @AuthenticationPrincipal Jwt jwt) {
         UUID currentUserId = UUID.fromString(jwt.getSubject());
-        ProjectJoinRequest joinRequest = projectJoinRequestService.createProjectJoinRequest(projectId,currentUserId, request.message());
+        ProjectJoinRequest joinRequest = projectJoinRequestService.createProjectJoinRequest(projectId, currentUserId, request.message());
 
         return ProjectJoinRequestResponse.toResponse(joinRequest);
     }
