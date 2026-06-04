@@ -38,7 +38,7 @@ public class UserSearchService {
         return searchService.search(
                 queries,
                 userSearchRepository::searchIdsByQuery,
-                userSearchRepository::findAllById
+                userSearchRepository::findAllWithTagsById
         );
     }
 
@@ -58,7 +58,7 @@ public class UserSearchService {
         return searchService.search(
                 queries,
                 userSearchRepository::searchIdsByQuery,
-                userSearchRepository::findAllById,
+                userSearchRepository::findAllWithTagsById,
                 pageable
         );
     }

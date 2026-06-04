@@ -41,7 +41,7 @@ class ProjectSearchServiceTest {
     @Test
     void searchProjects_shouldReturnAll_whenSingleQuery() {
         when(repository.searchIdsByQuery("java")).thenReturn(List.of(id1, id2));
-        when(repository.findAllById(Set.of(id1, id2))).thenReturn(List.of(project1, project2));
+        when(repository.findAllWithTagsById(Set.of(id1, id2))).thenReturn(List.of(project1, project2));
 
         List<ProjectEntity> result = service.searchProjects(List.of("java"));
 
@@ -52,7 +52,7 @@ class ProjectSearchServiceTest {
     void searchProjects_shouldIntersect_whenMultipleQueries() {
         when(repository.searchIdsByQuery("web")).thenReturn(List.of(id1, id2));
         when(repository.searchIdsByQuery("java")).thenReturn(List.of(id2));
-        when(repository.findAllById(Set.of(id2))).thenReturn(List.of(project2));
+        when(repository.findAllWithTagsById(Set.of(id2))).thenReturn(List.of(project2));
 
         List<ProjectEntity> result = service.searchProjects(List.of("web", "java"));
 
@@ -78,7 +78,7 @@ class ProjectSearchServiceTest {
     @Test
     void searchProjectsPaged_shouldReturnPage() {
         when(repository.searchIdsByQuery("java")).thenReturn(List.of(id1, id2));
-        when(repository.findAllById(any())).thenReturn(List.of(project1));
+        when(repository.findAllWithTagsById(any())).thenReturn(List.of(project1));
 
         var page = service.searchProjects(List.of("java"), PageRequest.of(0, 1));
 

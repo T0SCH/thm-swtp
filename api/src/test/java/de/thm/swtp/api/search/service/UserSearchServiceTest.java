@@ -41,7 +41,7 @@ class UserSearchServiceTest {
     @Test
     void searchUsers_shouldReturnAll_whenSingleQuery() {
         when(repository.searchIdsByQuery("john")).thenReturn(List.of(id1, id2));
-        when(repository.findAllById(Set.of(id1, id2))).thenReturn(List.of(user1, user2));
+        when(repository.findAllWithTagsById(Set.of(id1, id2))).thenReturn(List.of(user1, user2));
 
         List<UserProfile> result = service.searchUsers(List.of("john"));
 
@@ -52,7 +52,7 @@ class UserSearchServiceTest {
     void searchUsers_shouldIntersect_whenMultipleQueries() {
         when(repository.searchIdsByQuery("john")).thenReturn(List.of(id1, id2));
         when(repository.searchIdsByQuery("doe")).thenReturn(List.of(id2));
-        when(repository.findAllById(Set.of(id2))).thenReturn(List.of(user2));
+        when(repository.findAllWithTagsById(Set.of(id2))).thenReturn(List.of(user2));
 
         List<UserProfile> result = service.searchUsers(List.of("john", "doe"));
 
@@ -78,7 +78,7 @@ class UserSearchServiceTest {
     @Test
     void searchUsersPaged_shouldReturnPage() {
         when(repository.searchIdsByQuery("john")).thenReturn(List.of(id1, id2));
-        when(repository.findAllById(any())).thenReturn(List.of(user1));
+        when(repository.findAllWithTagsById(any())).thenReturn(List.of(user1));
 
         var page = service.searchUsers(List.of("john"), PageRequest.of(0, 1));
 

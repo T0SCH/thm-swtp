@@ -39,7 +39,7 @@ public class ProjectSearchService {
         return searchService.search(
                 queries,
                 projectSearchRepository::searchIdsByQuery,
-                projectSearchRepository::findAllById
+                projectSearchRepository::findAllWithTagsById
         );
     }
 
@@ -60,7 +60,7 @@ public class ProjectSearchService {
         return searchService.search(
                 queries,
                 projectSearchRepository::searchIdsByQuery,
-                projectSearchRepository::findAllById,
+                projectSearchRepository::findAllWithTagsById,
                 pageable
         );
     }

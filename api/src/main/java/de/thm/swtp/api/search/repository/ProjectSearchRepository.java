@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,4 +36,21 @@ public interface ProjectSearchRepository extends JpaRepository<ProjectEntity, UU
                  OR LOWER(t.name) LIKE LOWER(CONCAT('%', :query, '%')))
             """)
     List<UUID> searchIdsByQuery(@Param("query") String query);
+
+    /**
+     * Fetches projects by their IDs with their tags eagerly loaded.
+     * <p>
+     * Uses {@code JOIN FETCH} to load the {@code tags} collection within the
+     * same query, avoiding a {@link org.hibernate.LazyInitializationException}
+     * when the tags are accessed outside the Hibernate session (e.g. in a mapper).
+     *
+     * @param ids project IDs to fetch
+     * @return projects with their tags initialized
+     */
+    @Query("""
+            SELECT DISTINCT p FROM projects p
+            LEFT JOIN FETCH p.tags
+            WHERE p.id IN :ids
+            """)
+    List<ProjectEntity> findAllWithTagsById(@Param("ids") Collection<UUID> ids);
 }
