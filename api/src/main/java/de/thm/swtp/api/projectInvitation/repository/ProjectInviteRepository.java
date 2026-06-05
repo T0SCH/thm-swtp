@@ -12,6 +12,8 @@ public interface ProjectInviteRepository extends JpaRepository<ProjectInviteEnti
 
     /** Returns a list of all invitations from a specific project.*/
     List<ProjectInviteEntity> findByProjectId(UUID projectId);
+
+    void deleteByProjectId(UUID projectId);
     /** Returns a list of all invitations send to a specific user.*/
     List<ProjectInviteEntity> findByInvitedUserKeycloakId(UUID invitedUserId);
     /** Returns all invites send to a specific user from a specific project with a specific status*/

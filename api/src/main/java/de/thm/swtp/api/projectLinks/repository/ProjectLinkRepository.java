@@ -11,4 +11,6 @@ public interface ProjectLinkRepository extends JpaRepository<ProjectLinkEntity, 
     List<ProjectLinkEntity> findByProjectIdOrderByCreatedAtAsc(UUID projectId);
 
     boolean existsByProjectIdAndUrlIgnoreCase(UUID projectId, String url);
+
+    void deleteByProjectId(UUID projectId);
 }

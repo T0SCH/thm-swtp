@@ -17,7 +17,7 @@ public class ProjectSearchService {
     // TODO: no pagination, it returns all matches at once.
     @Transactional(readOnly = true)
     public List<ProjectSearchResult> searchProjects(String query) {
-        return projectSearchRepository.findByNameContainingIgnoreCase(query)
+        return projectSearchRepository.findByNameContainingIgnoreCaseAndIsPrivateProjectFalse(query)
                 .stream()
                 .map(p -> ProjectSearchResult.builder()
                         .id(p.getId())

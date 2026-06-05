@@ -4,6 +4,8 @@ package de.thm.swtp.api.project;
 import de.thm.swtp.api.project.dto.request.*;
 import de.thm.swtp.api.project.dto.response.*;
 import de.thm.swtp.api.project.exception.*;
+import de.thm.swtp.api.projectInvitation.repository.ProjectInviteRepository;
+import de.thm.swtp.api.projectLinks.repository.ProjectLinkRepository;
 import de.thm.swtp.api.userprofile.entity.UserProfile;
 import de.thm.swtp.api.userprofile.repository.UserProfileRepository;
 
@@ -20,6 +22,8 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserProfileRepository userProfileRepository;
+    private final ProjectInviteRepository projectInviteRepository;
+    private final ProjectLinkRepository projectLinkRepository;
 
     private ProjectResponse toResponse(ProjectEntity project) {
         return ProjectResponse.builder()
@@ -69,22 +73,18 @@ public class ProjectService {
         return toResponse(saved);
     }
 
+    @Transactional
     public DeleteProjectResponse deleteProject(UUID projectId, String username) {
 
         ProjectEntity project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ExceptionProjectNotFound(projectId));
 
-        if (project.getDeletedAt() != null) {
-            throw new ExceptionProjectAlreadyDeleted(projectId);
-        }
-
         userProfileRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User profile not found for username: " + username));
 
-
-
-        project.setDeletedAt(LocalDateTime.now());
-        projectRepository.save(project);
+        projectInviteRepository.deleteByProjectId(projectId);
+        projectLinkRepository.deleteByProjectId(projectId);
+        projectRepository.delete(project);
 
         return DeleteProjectResponse.builder()
                 .projectId(projectId)
