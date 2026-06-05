@@ -44,7 +44,7 @@ public class ProjectJoinRequestService {
         UserProfile requestingUserEntity = userProfileRepository.findById(currentUserId)
                 .orElseThrow(() -> new UserProfileNotFoundException(currentUserId.toString()));
 
-        checkUserIsNotProjectOwner(projectEntity,currentUserId);
+        checkUserIsNotProjectOwner(projectEntity, currentUserId);
 
         if (hasActiveRequests(projectId, currentUserId)){
             throw new ProjectJoinRequestAlreadyExistsException(projectId);
