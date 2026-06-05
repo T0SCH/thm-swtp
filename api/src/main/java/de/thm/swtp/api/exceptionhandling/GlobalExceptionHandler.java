@@ -1,6 +1,6 @@
 package de.thm.swtp.api.exceptionhandling;
 
-import de.thm.swtp.api.exceptionhandling.exceptions.ProfileAccessDeniedException;
+import de.thm.swtp.api.exceptionhandling.exceptions.*;
 import de.thm.swtp.api.projectInvitation.exception.InvalidProjectInviteException;
 import de.thm.swtp.api.projectInvitation.exception.ProjectInviteAccessDeniedException;
 import de.thm.swtp.api.projectInvitation.exception.ProjectInviteNotFoundException;
@@ -91,5 +91,28 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleTagAccessDenied(TagAccessDeniedException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ErrorResponse.of(403, "Forbidden", ex.getMessage()));
+    }
+
+    @ExceptionHandler(ProjectJoinRequestAccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleProjectJoinRequestAccessDenied(ProjectJoinRequestAccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ErrorResponse.of(403, "Forbidden", ex.getMessage()));
+    }
+    @ExceptionHandler(ProjectJoinRequestAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleProjectJoinRequestAlreadyExists(ProjectJoinRequestAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ErrorResponse.of(409, "Conflict", ex.getMessage()));
+    }
+
+    @ExceptionHandler(ProjectJoinRequestInvalidStatusForEditException.class)
+    public ResponseEntity<ErrorResponse> handleProjectJoinRequestInvalidStatusForEdit(ProjectJoinRequestInvalidStatusForEditException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ErrorResponse.of(409, "Conflict", ex.getMessage()));
+    }
+
+    @ExceptionHandler(ProjectJoinRequestNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleProjectJoinRequestNotFound(ProjectJoinRequestNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.of(404, "Not Found", ex.getMessage()));
     }
 }

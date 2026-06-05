@@ -44,6 +44,8 @@ public class ProjectJoinRequestService {
         UserProfile requestingUserEntity = userProfileRepository.findById(currentUserId)
                 .orElseThrow(() -> new UserProfileNotFoundException(currentUserId.toString()));
 
+        checkUserIsNotProjectOwner(projectEntity,currentUserId);
+
         if (hasActiveRequests(projectId, currentUserId)){
             throw new ProjectJoinRequestAlreadyExistsException(projectId);
         }
@@ -142,6 +144,12 @@ public class ProjectJoinRequestService {
 
         if (!ownerId.equals(currentUserId)){
             throw new ProjectJoinRequestAccessDeniedException("Only the project owner is allowed to manage join-requests.");
+        }
+    }
+
+    private void checkUserIsNotProjectOwner(ProjectEntity projectEntity, UUID currentUserId) {
+        if (projectEntity.getOwner().getKeycloakId().equals(currentUserId)){
+            throw new ProjectJoinRequestAccessDeniedException("Project owners cannot create a join request for their own projects.");
         }
     }
 }
