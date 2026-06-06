@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 import { ProfileInformation } from '../../components/profile-information/profile-information';
@@ -27,7 +28,7 @@ interface ProfileViewState {
   imports: [ProfileInformation, ProfileBanner, FormsModule],
   templateUrl: './user-profile.html',
 })
-export class UserProfile implements OnInit {
+export class UserProfile implements OnInit, OnDestroy {
   /** Platform identifier used to check whether the component runs in the browser. */
   private readonly platformId = inject(PLATFORM_ID);
 
@@ -42,6 +43,8 @@ export class UserProfile implements OnInit {
 
   /** Username read from the route parameter :username. */
   routeUsername = '';
+
+  private paramSub: Subscription | null = null;
 
   /** Reactive view state used by the template for loading, success and error states */
   readonly profileState = signal<ProfileViewState>({
@@ -98,15 +101,22 @@ export class UserProfile implements OnInit {
       return;
     }
 
-    this.routeUsername = this.route.snapshot.paramMap.get('username') ?? '';
-
-    if (!this.routeUsername) {
-      this.profileState.set({ isLoading: false, profile: null, errorMessage: 'User not found.' });
-      return;
-    }
-
     await this.authService.waitUntilAuthReady();
-    this.loadProfile();
+
+    this.paramSub = this.route.paramMap.subscribe(params => {
+      this.routeUsername = params.get('username') ?? '';
+
+      if (!this.routeUsername) {
+        this.profileState.set({ isLoading: false, profile: null, errorMessage: 'User not found.' });
+        return;
+      }
+
+      this.loadProfile();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.paramSub?.unsubscribe();
   }
 
   /**
