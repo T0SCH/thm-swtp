@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ProjectResponse } from '../../../../models/project.model';
 import { FavoriteButton } from '../../../../shared/favorite-button/favorite-button';
 
@@ -11,4 +11,5 @@ import { FavoriteButton } from '../../../../shared/favorite-button/favorite-butt
 export class ProjectHeader {
   @Input({ required: true }) project!: ProjectResponse;
   @Input() isOwner = false;
+  @Output() favoriteCountChanged = new EventEmitter<number>();
 }

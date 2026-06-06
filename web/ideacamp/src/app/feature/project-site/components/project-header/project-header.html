@@ -27,7 +27,11 @@
       </div>
 
       <div class="hidden flex-col gap-3 md:flex">
-        <app-favorite-button [projectId]="project.id" />
+        <app-favorite-button
+          [projectId]="project.id"
+          [count]="project.favoriteCount"
+          (favoriteCountChanged)="favoriteCountChanged.emit($event)"
+        />
 <!--      TODO: implement-->
 <!--      @if (isOwner) {-->
 <!--        <button-->
