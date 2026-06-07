@@ -78,7 +78,7 @@ public class ProjectFavoriteController {
                 .stats(ProjectStatsResponse.builder()
                         .contributors(project.getMembers().size() + 1)
                         .views(project.getViewsCount())
-                        .likes(project.getLikesCount())
+                        .likes((int) projectFavoriteService.countFavorites(project.getId()))
                         .openPositions(project.getOpenPositionsCount())
                         .build())
                 .favoriteCount(projectFavoriteService.countFavorites(project.getId()))

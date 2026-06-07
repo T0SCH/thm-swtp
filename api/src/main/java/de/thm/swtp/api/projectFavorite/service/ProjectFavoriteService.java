@@ -48,9 +48,6 @@ public class ProjectFavoriteService {
                         .project(project)
                         .build()
         );
-
-        project.setLikesCount(project.getLikesCount() + 1);
-        projectRepository.save(project);
     }
 
     @Transactional
@@ -61,9 +58,6 @@ public class ProjectFavoriteService {
 
         ProjectEntity project = favorite.getProject();
         projectFavoriteRepository.delete(favorite);
-
-        project.setLikesCount(Math.max(0, project.getLikesCount() - 1));
-        projectRepository.save(project);
     }
 
     @Transactional(readOnly = true)

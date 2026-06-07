@@ -17,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
@@ -37,7 +36,7 @@ class ProjectFavoriteServiceTest {
     private ProjectFavoriteService projectFavoriteService;
 
     @Test
-    void shouldIncreaseLikesCountWhenFavoriteIsAdded() {
+    void shouldAddFavorite() {
         UUID projectId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
 
@@ -52,7 +51,6 @@ class ProjectFavoriteServiceTest {
                 .name("Testproject")
                 .projectUrl("testproject")
                 .owner(user)
-                .likesCount(3)
                 .build();
 
         when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
@@ -61,14 +59,12 @@ class ProjectFavoriteServiceTest {
 
         projectFavoriteService.addFavorite(projectId, userId);
 
-        assertThat(project.getLikesCount()).isEqualTo(4);
-
         verify(projectFavoriteRepository).save(any(ProjectFavoriteEntity.class));
-        verify(projectRepository).save(project);
+        verify(projectRepository, never()).save(project);
     }
 
     @Test
-    void shouldNotIncreaseLikesCountWhenProjectIsAlreadyFavorited() {
+    void shouldThrowExceptionWhenProjectIsAlreadyFavorited() {
         UUID projectId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
 
@@ -83,7 +79,6 @@ class ProjectFavoriteServiceTest {
                 .name("Testproject")
                 .projectUrl("testproject")
                 .owner(owner)
-                .likesCount(3)
                 .build();
 
         when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
@@ -92,14 +87,12 @@ class ProjectFavoriteServiceTest {
         assertThatThrownBy(() -> projectFavoriteService.addFavorite(projectId, userId))
                 .isInstanceOf(ProjectAlreadyFavoritedException.class);
 
-        assertThat(project.getLikesCount()).isEqualTo(3);
-
         verify(projectFavoriteRepository, never()).save(any(ProjectFavoriteEntity.class));
         verify(projectRepository, never()).save(project);
     }
 
     @Test
-    void shouldDecreaseLikesCountWhenFavoriteIsRemoved() {
+    void shouldRemoveFavorite() {
         UUID projectId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
 
@@ -114,7 +107,6 @@ class ProjectFavoriteServiceTest {
                 .name("Testproject")
                 .projectUrl("testproject")
                 .owner(user)
-                .likesCount(3)
                 .build();
 
         ProjectFavoriteEntity favorite = ProjectFavoriteEntity.builder()
@@ -128,46 +120,8 @@ class ProjectFavoriteServiceTest {
 
         projectFavoriteService.removeFavorite(projectId, userId);
 
-        assertThat(project.getLikesCount()).isEqualTo(2);
-
         verify(projectFavoriteRepository).delete(favorite);
-        verify(projectRepository).save(project);
-    }
-
-    @Test
-    void shouldNotDecreaseLikesCountBelowZero() {
-        UUID projectId = UUID.randomUUID();
-        UUID userId = UUID.randomUUID();
-
-        UserProfile user = UserProfile.builder()
-                .keycloakId(userId)
-                .username("testuser")
-                .email("test@mni.thm.de")
-                .build();
-
-        ProjectEntity project = ProjectEntity.builder()
-                .id(projectId)
-                .name("Testproject")
-                .projectUrl("testproject")
-                .owner(user)
-                .likesCount(0)
-                .build();
-
-        ProjectFavoriteEntity favorite = ProjectFavoriteEntity.builder()
-                .id(UUID.randomUUID())
-                .user(user)
-                .project(project)
-                .build();
-
-        when(projectFavoriteRepository.findByUserKeycloakIdAndProjectId(userId, projectId))
-                .thenReturn(Optional.of(favorite));
-
-        projectFavoriteService.removeFavorite(projectId, userId);
-
-        assertThat(project.getLikesCount()).isZero();
-
-        verify(projectFavoriteRepository).delete(favorite);
-        verify(projectRepository).save(project);
+        verify(projectRepository, never()).save(project);
     }
 
     @Test

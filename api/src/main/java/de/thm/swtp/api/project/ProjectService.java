@@ -52,7 +52,7 @@ public class ProjectService {
                 .stats(ProjectStatsResponse.builder()
                         .contributors(contributors)
                         .views(project.getViewsCount())
-                        .likes(project.getLikesCount())
+                        .likes((int) projectFavoriteRepository.countByProjectId(project.getId()))
                         .openPositions(project.getOpenPositionsCount())
                         .build())
                 .favoriteCount(projectFavoriteRepository.countByProjectId(project.getId()))
@@ -77,7 +77,7 @@ public class ProjectService {
                 .projectUrl(request.projectUrl())
                 .isPrivateProject(request.isPrivateProject())
                 .owner(owner)
-                .members(new ArrayList<>())
+                .members(Set.of())
                 .build();
 
         ProjectEntity saved = projectRepository.save(project);

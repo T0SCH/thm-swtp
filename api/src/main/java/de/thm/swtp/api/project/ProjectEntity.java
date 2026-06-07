@@ -36,15 +36,11 @@ public class ProjectEntity {
     @Builder.Default
     private boolean isPrivateProject = false;
 
-    @Column(name = "views_count", nullable = false)
+    @Column(name = "views_count", nullable = false, columnDefinition = "integer default 0")
     @Builder.Default
     private int viewsCount = 0;
 
-    @Column(name = "likes_count", nullable = false)
-    @Builder.Default
-    private int likesCount = 0;
-
-    @Column(name = "open_positions_count", nullable = false)
+    @Column(name = "open_positions_count", nullable = false, columnDefinition = "integer default 0")
     @Builder.Default
     private int openPositionsCount = 0;
 
@@ -62,7 +58,7 @@ public class ProjectEntity {
             inverseJoinColumns = @JoinColumn(name = "user_profile_keycloak_id")
     )
     @Builder.Default
-    private List<UserProfile> members = new ArrayList<>();
+    private Set<UserProfile> members = new HashSet<>();
 
     // Misses Join to TagEntity for project-tags. ManyToMany should work.
     @ManyToMany

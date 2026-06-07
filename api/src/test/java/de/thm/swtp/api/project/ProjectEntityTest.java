@@ -30,7 +30,6 @@ class ProjectEntityTest {
         assertThat(project.getMembers()).isNotNull();
         assertThat(project.isPrivateProject()).isFalse();
         assertThat(project.getViewsCount()).isZero();
-        assertThat(project.getLikesCount()).isZero();
         assertThat(project.getOpenPositionsCount()).isZero();
     }
 
@@ -49,12 +48,10 @@ class ProjectEntityTest {
                 .isPrivateProject(false)
                 .owner(owner)
                 .viewsCount(247)
-                .likesCount(12)
                 .openPositionsCount(3)
                 .build();
 
         assertThat(project.getViewsCount()).isEqualTo(247);
-        assertThat(project.getLikesCount()).isEqualTo(12);
         assertThat(project.getOpenPositionsCount()).isEqualTo(3);
     }
 }
