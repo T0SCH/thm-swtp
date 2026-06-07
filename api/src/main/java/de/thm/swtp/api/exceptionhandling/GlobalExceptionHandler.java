@@ -98,7 +98,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ErrorResponse.of(403, "Forbidden", ex.getMessage()));
     }
-    
     @ExceptionHandler(ProjectJoinRequestAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleProjectJoinRequestAlreadyExists(ProjectJoinRequestAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
