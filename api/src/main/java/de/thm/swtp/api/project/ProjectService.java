@@ -165,7 +165,7 @@ public class ProjectService {
                 .toList();
     }
 
-    private void createProjectInvites(ProjectEntity project, UserProfile owner, Set <UUID> invitedUserIds){
+    private void createProjectInvites(ProjectEntity project, UserProfile owner, Set <UUID> invitedUserIds) {
         if (invitedUserIds == null || invitedUserIds.isEmpty()) {
             return;
         }
@@ -179,6 +179,8 @@ public class ProjectService {
                         PROJECT_CREATION_INVITE_MESSAGE,
                         owner.getKeycloakId()
                 ));
+    }
+
     @Transactional
     public List<UserProfile> getProjectMembers(UUID projectId) {
         ProjectEntity projectEntity = projectRepository.findById(projectId)
