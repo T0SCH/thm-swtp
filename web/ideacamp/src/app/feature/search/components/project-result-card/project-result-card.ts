@@ -2,11 +2,12 @@ import { Component, input, signal, inject, DestroyRef, OnInit } from '@angular/c
 import { RouterLink } from '@angular/router';
 import { ProjectSearchResult } from '../../models/project-search-result.model';
 import { SearchService } from '../../services/search.service';
+import { FavoriteButton } from '../../../../shared/favorite-button/favorite-button';
 
 @Component({
   selector: 'app-project-result-card',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FavoriteButton],
   templateUrl: './project-result-card.html',
 })
 export class ProjectResultCard implements OnInit {
