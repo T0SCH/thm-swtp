@@ -61,9 +61,8 @@ export class MyProjectsPage implements OnInit, AfterViewInit {
   readonly pillLeft = signal(0);
   readonly pillWidth = signal(0);
 
-  async ngOnInit(): Promise<void> {
-    await this.authService.waitUntilAuthReady();
-    this.loadProjects();
+  ngOnInit(): void {
+    this.authService.waitUntilAuthReady().then(() => this.loadProjects());
   }
 
   ngAfterViewInit(): void {
