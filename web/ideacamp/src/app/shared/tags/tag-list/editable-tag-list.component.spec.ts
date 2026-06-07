@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TagListComponent } from './tag-list.component';
+import { EditableTagListComponent } from './editable-tag-list.component';
 
-describe('TagListComponent', () => {
-  let component: TagListComponent;
-  let fixture: ComponentFixture<TagListComponent>;
+describe('EditableTagListComponent', () => {
+  let component: EditableTagListComponent;
+  let fixture: ComponentFixture<EditableTagListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TagListComponent],
+      imports: [EditableTagListComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TagListComponent);
+    fixture = TestBed.createComponent(EditableTagListComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
