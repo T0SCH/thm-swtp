@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -57,7 +57,7 @@ class ProjectServiceTest {
                 .projectUrl("testprojekt")
                 .isPrivateProject(false)
                 .owner(owner)
-                .members(List.of(member))
+                .members(Set.of(member))
                 .viewsCount(247)
                 .likesCount(12)
                 .openPositionsCount(3)
