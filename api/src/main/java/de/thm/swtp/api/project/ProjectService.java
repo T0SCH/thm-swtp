@@ -49,16 +49,14 @@ public class ProjectService {
                         .collect(java.util.stream.Collectors.toSet()))
                 .createdAt(project.getCreatedAt())
                 .updatedAt(project.getUpdatedAt())
-<<<<<<< HEAD
                 .stats(ProjectStatsResponse.builder()
                         .contributors(contributors)
                         .views(project.getViewsCount())
                         .likes(project.getLikesCount())
                         .openPositions(project.getOpenPositionsCount())
                         .build())
-=======
                 .favoriteCount(projectFavoriteRepository.countByProjectId(project.getId()))
->>>>>>> developer
+
                 .build();
     }
 

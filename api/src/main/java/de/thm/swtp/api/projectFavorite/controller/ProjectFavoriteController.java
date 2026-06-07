@@ -2,6 +2,7 @@ package de.thm.swtp.api.projectFavorite.controller;
 
 import de.thm.swtp.api.project.ProjectEntity;
 import de.thm.swtp.api.project.dto.response.ProjectResponse;
+import de.thm.swtp.api.project.dto.response.ProjectStatsResponse;
 import de.thm.swtp.api.projectFavorite.service.ProjectFavoriteService;
 import de.thm.swtp.api.userprofile.entity.UserProfile;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,12 @@ public class ProjectFavoriteController {
                         .collect(Collectors.toSet()))
                 .createdAt(project.getCreatedAt())
                 .updatedAt(project.getUpdatedAt())
+                .stats(ProjectStatsResponse.builder()
+                        .contributors(project.getMembers().size() + 1)
+                        .views(project.getViewsCount())
+                        .likes(project.getLikesCount())
+                        .openPositions(project.getOpenPositionsCount())
+                        .build())
                 .favoriteCount(projectFavoriteService.countFavorites(project.getId()))
                 .build();
     }
