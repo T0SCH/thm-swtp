@@ -44,6 +44,7 @@ public class ProjectService {
                 .id(project.getId())
                 .name(project.getName())
                 .description(project.getDescription())
+                .shortDescription(project.getShortDescription())
                 .projectUrl(project.getProjectUrl())
                 .isPrivateProject(project.isPrivateProject())
                 .ownerId(project.getOwner().getKeycloakId())
@@ -76,6 +77,7 @@ public class ProjectService {
         ProjectEntity project = ProjectEntity.builder()
                 .name(request.name())
                 .description(request.description())
+                .shortDescription(request.shortDescription())
                 .projectUrl(request.projectUrl())
                 .isPrivateProject(request.isPrivateProject())
                 .owner(owner)
@@ -177,6 +179,9 @@ public class ProjectService {
         }
         if (request.getDescription() != null) {
             project.setDescription(request.getDescription());
+        }
+        if (request.getShortDescription() != null) {
+            project.setShortDescription(request.getShortDescription());
         }
         if (request.getProjectUrl() != null) {
             project.setProjectUrl(request.getProjectUrl());
