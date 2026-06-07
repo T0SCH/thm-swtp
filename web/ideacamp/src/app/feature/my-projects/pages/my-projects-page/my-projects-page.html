@@ -4,7 +4,8 @@
       <h1 class="text-4xl font-bold text-slate-700">Meine Projekte</h1>
       <a
         routerLink="/createProject"
-        class="inline-flex items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-900">
+        class="inline-flex items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-900"
+      >
         Projekt erstellen
       </a>
     </header>
@@ -13,12 +14,19 @@
     <div class="mt-8 rounded-xl border border-slate-200 bg-white shadow-sm">
       <button
         (click)="toggleInvitations()"
-        class="flex w-full items-center justify-between px-6 py-4 text-left">
+        class="flex w-full items-center justify-between px-6 py-4 text-left"
+      >
         <div class="flex items-center gap-3">
           <span class="text-base font-semibold text-slate-700">Project Invitations</span>
-          <span class="flex h-6 w-6 items-center justify-center rounded-full bg-slate-800 text-xs font-medium text-white">3</span>
+          <span
+            class="flex h-6 w-6 items-center justify-center rounded-full bg-slate-800 text-xs font-medium text-white"
+            >3</span
+          >
         </div>
-        <i class="pi text-slate-400" [class]="invitationsExpanded() ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+        <i
+          class="pi text-slate-400"
+          [class]="invitationsExpanded() ? 'pi-chevron-up' : 'pi-chevron-down'"
+        ></i>
       </button>
 
       @if (invitationsExpanded()) {
@@ -26,18 +34,30 @@
           <!-- Invitation 1 -->
           <div class="rounded-xl border border-slate-100 p-5">
             <div class="flex items-start gap-4">
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-700 text-sm font-bold text-white">DE</div>
+              <div
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-700 text-sm font-bold text-white"
+              >
+                DE
+              </div>
               <div class="flex-1">
                 <h3 class="text-base font-semibold text-slate-700">Design System 2.0</h3>
-                <p class="mt-0.5 text-sm text-slate-400">Invited by <span class="font-medium text-slate-600">Maria Schmidt</span> · 2 hours ago</p>
+                <p class="mt-0.5 text-sm text-slate-400">
+                  Invited by <span class="font-medium text-slate-600">Maria Schmidt</span> · 2 hours
+                  ago
+                </p>
                 <blockquote class="mt-3 border-l-4 border-slate-200 pl-4 text-sm text-slate-500">
-                  Hey! Would love your input on the new token structure we're building out. Jump in whenever you're ready.
+                  Hey! Would love your input on the new token structure we're building out. Jump in
+                  whenever you're ready.
                 </blockquote>
                 <div class="mt-4 flex gap-2">
-                  <button class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700">
+                  <button
+                    class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+                  >
                     <i class="pi pi-check text-xs"></i> Accept
                   </button>
-                  <button class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50">
+                  <button
+                    class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                  >
                     <i class="pi pi-times text-xs"></i> Decline
                   </button>
                 </div>
@@ -48,18 +68,29 @@
           <!-- Invitation 2 -->
           <div class="mt-3 rounded-xl border border-slate-100 p-5">
             <div class="flex items-start gap-4">
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-700 text-sm font-bold text-white">MO</div>
+              <div
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-700 text-sm font-bold text-white"
+              >
+                MO
+              </div>
               <div class="flex-1">
                 <h3 class="text-base font-semibold text-slate-700">Mobile App Redesign</h3>
-                <p class="mt-0.5 text-sm text-slate-400">Invited by <span class="font-medium text-slate-600">Tom Müller</span> · Yesterday</p>
+                <p class="mt-0.5 text-sm text-slate-400">
+                  Invited by <span class="font-medium text-slate-600">Tom Müller</span> · Yesterday
+                </p>
                 <blockquote class="mt-3 border-l-4 border-slate-200 pl-4 text-sm text-slate-500">
-                  Added you as a viewer so you can follow along with the redesign progress. Let me know if you'd like edit access too.
+                  Added you as a viewer so you can follow along with the redesign progress. Let me
+                  know if you'd like edit access too.
                 </blockquote>
                 <div class="mt-4 flex gap-2">
-                  <button class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700">
+                  <button
+                    class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+                  >
                     <i class="pi pi-check text-xs"></i> Accept
                   </button>
-                  <button class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50">
+                  <button
+                    class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                  >
                     <i class="pi pi-times text-xs"></i> Decline
                   </button>
                 </div>
@@ -70,18 +101,29 @@
           <!-- Invitation 3 -->
           <div class="mt-3 rounded-xl border border-slate-100 p-5">
             <div class="flex items-start gap-4">
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-700 text-sm font-bold text-white">MA</div>
+              <div
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-700 text-sm font-bold text-white"
+              >
+                MA
+              </div>
               <div class="flex-1">
                 <h3 class="text-base font-semibold text-slate-700">Marketing Campaign Q3</h3>
-                <p class="mt-0.5 text-sm text-slate-400">Invited by <span class="font-medium text-slate-600">Anna Weber</span> · 3 days ago</p>
+                <p class="mt-0.5 text-sm text-slate-400">
+                  Invited by <span class="font-medium text-slate-600">Anna Weber</span> · 3 days ago
+                </p>
                 <blockquote class="mt-3 border-l-4 border-slate-200 pl-4 text-sm text-slate-500">
-                  We're kicking off the Q3 campaign planning and need someone to own the content calendar. Thought of you!
+                  We're kicking off the Q3 campaign planning and need someone to own the content
+                  calendar. Thought of you!
                 </blockquote>
                 <div class="mt-4 flex gap-2">
-                  <button class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700">
+                  <button
+                    class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+                  >
                     <i class="pi pi-check text-xs"></i> Accept
                   </button>
-                  <button class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50">
+                  <button
+                    class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                  >
                     <i class="pi pi-times text-xs"></i> Decline
                   </button>
                 </div>
@@ -97,39 +139,57 @@
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 class="text-2xl font-bold text-slate-700">Projects</h2>
-          <p class="text-sm text-slate-400">{{ projects().length }} {{ activeFilter() === 'my' ? 'projects you own' : 'projects' }}</p>
+          <p class="text-sm text-slate-400">
+            {{ projects().length }} {{ activeFilter() === 'my' ? 'projects you own' : 'projects' }}
+          </p>
         </div>
-        <div class="flex gap-2">
+        <div
+          #pillContainer
+          class="relative inline-flex items-center rounded-2xl border border-slate-200 bg-white p-1 shadow-sm"
+        >
+          <div
+            class="absolute top-1 bottom-1 rounded-full bg-slate-700 transition-all duration-300 ease-in-out"
+            [style.left.px]="pillLeft()"
+            [style.width.px]="pillWidth()"
+          ></div>
           <button
+            #btnAll
             (click)="setFilter('all')"
-            class="inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-medium transition"
-            [class]="activeFilter() === 'all'
-              ? 'border-slate-800 bg-slate-800 text-white hover:bg-slate-900'
-              : 'border-slate-300 bg-white text-slate-600 hover:bg-slate-50'">
+            class="relative z-10 inline-flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-medium transition-colors duration-300"
+            [class]="activeFilter() === 'all' ? 'text-white' : 'text-slate-500 hover:text-slate-700'"
+          >
             <i class="pi pi-filter text-xs"></i> All projects
           </button>
           <button
+            #btnMy
             (click)="setFilter('my')"
-            class="inline-flex items-center rounded-lg border px-4 py-2 text-sm font-medium transition"
-            [class]="activeFilter() === 'my'
-              ? 'border-slate-800 bg-slate-800 text-white hover:bg-slate-900'
-              : 'border-slate-300 bg-white text-slate-600 hover:bg-slate-50'">
-            My projects
+            class="relative z-10 inline-flex items-center rounded-md px-4 py-1.5 text-sm font-medium transition-colors duration-300"
+            [class]="activeFilter() === 'my' ? 'text-white' : 'text-slate-500 hover:text-slate-700'"
+          >
+            Owned
           </button>
         </div>
       </div>
 
       @if (isLoading()) {
-        <div class="mt-6 rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
+        <div
+          class="mt-6 rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm"
+        >
           <p class="text-sm text-slate-500">Deine Projekte werden geladen…</p>
         </div>
       } @else if (errorMessage()) {
-        <div class="mt-6 rounded-2xl border border-red-200 bg-red-50 px-6 py-12 text-center shadow-sm">
+        <div
+          class="mt-6 rounded-2xl border border-red-200 bg-red-50 px-6 py-12 text-center shadow-sm"
+        >
           <p class="text-sm font-medium text-red-700">{{ errorMessage() }}</p>
         </div>
       } @else if (!isFiltering() && projects().length === 0) {
-        <div class="mt-6 rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
-          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+        <div
+          class="mt-6 rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm"
+        >
+          <div
+            class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-500"
+          >
             <i class="pi pi-folder text-2xl"></i>
           </div>
           <h3 class="mt-5 text-2xl font-semibold text-slate-700">Noch keine Projekte</h3>
@@ -143,17 +203,22 @@
             <a
               [routerLink]="['/project', project.projectUrl]"
               class="project-card-animate flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-green-300 hover:shadow-md"
-              [style.animation-delay.ms]="$index * 50">
+              [style.animation-delay.ms]="$index * 50"
+            >
               <!-- Avatar -->
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
-                   [class]="getAvatarColor(project.name)">
+              <div
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+                [class]="getAvatarColor(project.name)"
+              >
                 {{ getInitials(project.name) }}
               </div>
 
               <!-- Project Info -->
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-2">
-                  <h3 class="truncate text-base font-semibold text-slate-700">{{ project.name }}</h3>
+                  <h3 class="truncate text-base font-semibold text-slate-700">
+                    {{ project.name }}
+                  </h3>
                   <i class="pi pi-star-fill text-sm text-amber-400"></i>
                 </div>
                 <p class="mt-0.5 truncate text-sm text-slate-400">
@@ -165,10 +230,15 @@
               @if (getTagsForProject(project.id).length > 0) {
                 <div class="hidden flex-wrap items-center justify-end gap-1.5 lg:flex">
                   @for (tag of getTagsForProject(project.id).slice(0, 3); track tag) {
-                    <span class="rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">{{ tag }}</span>
+                    <span
+                      class="rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600"
+                      >{{ tag }}</span
+                    >
                   }
                   @if (getTagsForProject(project.id).length > 3) {
-                    <span class="text-xs text-slate-400">+{{ getTagsForProject(project.id).length - 3 }}</span>
+                    <span class="text-xs text-slate-400"
+                      >+{{ getTagsForProject(project.id).length - 3 }}</span
+                    >
                   }
                 </div>
               }
@@ -179,10 +249,16 @@
                   <i class="pi pi-users text-xs"></i> {{ project.memberIds.length }}
                 </span>
                 <span class="inline-flex items-center gap-1">
-                  <i class="pi text-xs" [class]="project.isPrivateProject ? 'pi-lock' : 'pi-globe'"></i>
+                  <i
+                    class="pi text-xs"
+                    [class]="project.isPrivateProject ? 'pi-lock' : 'pi-globe'"
+                  ></i>
                   {{ project.isPrivateProject ? 'Private' : 'Public' }}
                 </span>
-                <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700">Owner</span>
+                <span
+                  class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700"
+                  >Owner</span
+                >
               </div>
 
               <!-- Favorite Button -->
