@@ -1,11 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { MyProjectsService } from '../../services/my-projects.service';
 import { ProjectResponse } from '../../../../models/project.model';
 import { AuthService } from '../../../auth/auth.service';
 import { FavoriteButton } from '../../../../shared/favorite-button/favorite-button';
 import { SearchService } from '../../../search/services/search.service';
 import { DestroyRef } from '@angular/core';
+import { environment } from '../../../../enviroments/enviroment.dev';
 
 @Component({
   selector: 'app-my-projects-page',
@@ -18,12 +20,14 @@ export class MyProjectsPage implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly searchService = inject(SearchService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly http = inject(HttpClient);
 
   readonly projects = signal<ProjectResponse[]>([]);
   readonly isLoading = signal(true);
   readonly errorMessage = signal('');
   readonly projectTags = signal<Map<string, string[]>>(new Map());
   readonly invitationsExpanded = signal(false);
+  readonly activeFilter = signal<'my' | 'all'>('my');
 
   async ngOnInit(): Promise<void> {
     await this.authService.waitUntilAuthReady();
@@ -58,6 +62,11 @@ export class MyProjectsPage implements OnInit {
     this.invitationsExpanded.update(v => !v);
   }
 
+  setFilter(filter: 'my' | 'all'): void {
+    this.activeFilter.set(filter);
+    this.loadProjects();
+  }
+
   private loadProjects(): void {
     const username = this.authService.username();
 
@@ -70,21 +79,39 @@ export class MyProjectsPage implements OnInit {
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    this.myProjectsService.getMyProjects(username).subscribe({
-      next: projects => {
-        this.projects.set(projects);
-        this.isLoading.set(false);
-        this.loadAllTags(projects);
-      },
-      error: () => {
-        this.errorMessage.set('Deine Projekte konnten nicht geladen werden.');
-        this.isLoading.set(false);
-      },
-    });
+    if (this.activeFilter() === 'all') {
+      this.http.get<ProjectResponse[]>(`${environment.apiUrl}/users/${encodeURIComponent(username)}/projects/all`).subscribe({
+        next: projects => {
+          this.projects.set(projects);
+          this.isLoading.set(false);
+          this.loadAllTags(projects);
+        },
+        error: () => {
+          this.errorMessage.set('Deine Projekte konnten nicht geladen werden.');
+          this.isLoading.set(false);
+        },
+      });
+    } else {
+      this.myProjectsService.getMyProjects(username).subscribe({
+        next: projects => {
+          this.projects.set(projects);
+          this.isLoading.set(false);
+          this.loadAllTags(projects);
+        },
+        error: () => {
+          this.errorMessage.set('Deine Projekte konnten nicht geladen werden.');
+          this.isLoading.set(false);
+        },
+      });
+    }
   }
 
   private loadAllTags(projects: ProjectResponse[]): void {
+    const current = this.projectTags();
     for (const project of projects) {
+      if (current.has(project.id)) {
+        continue;
+      }
       const sub = this.searchService.getProjectTags(project.id).subscribe({
         next: tags => {
           this.projectTags.update(map => {
