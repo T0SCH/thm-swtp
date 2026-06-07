@@ -14,6 +14,21 @@ import { environment } from '../../../../enviroments/enviroment.dev';
   standalone: true,
   imports: [RouterLink, FavoriteButton],
   templateUrl: './my-projects-page.html',
+  styles: [`
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .project-card-animate {
+      animation: fadeSlideIn 0.3s ease-out both;
+    }
+  `],
 })
 export class MyProjectsPage implements OnInit {
   private readonly myProjectsService = inject(MyProjectsService);
@@ -24,6 +39,7 @@ export class MyProjectsPage implements OnInit {
 
   readonly projects = signal<ProjectResponse[]>([]);
   readonly isLoading = signal(true);
+  readonly isFiltering = signal(false);
   readonly errorMessage = signal('');
   readonly projectTags = signal<Map<string, string[]>>(new Map());
   readonly invitationsExpanded = signal(false);
@@ -63,46 +79,46 @@ export class MyProjectsPage implements OnInit {
   }
 
   setFilter(filter: 'my' | 'all'): void {
+    if (this.activeFilter() === filter) return;
     this.activeFilter.set(filter);
-    this.loadProjects();
+    this.projects.set([]);
+    this.isFiltering.set(true);
+    this.errorMessage.set('');
+    setTimeout(() => this.loadProjects(true));
   }
 
-  private loadProjects(): void {
+  private loadProjects(isFilterSwitch = false): void {
     const username = this.authService.username();
 
     if (!username) {
       this.errorMessage.set('Dein Benutzername konnte nicht geladen werden.');
       this.isLoading.set(false);
+      this.isFiltering.set(false);
       return;
     }
 
-    this.isLoading.set(true);
+    if (!isFilterSwitch) {
+      this.isLoading.set(true);
+    }
     this.errorMessage.set('');
 
+    const onNext = (projects: ProjectResponse[]) => {
+      this.projects.set(projects);
+      this.isLoading.set(false);
+      this.isFiltering.set(false);
+      this.loadAllTags(projects);
+    };
+
+    const onError = () => {
+      this.errorMessage.set('Deine Projekte konnten nicht geladen werden.');
+      this.isLoading.set(false);
+      this.isFiltering.set(false);
+    };
+
     if (this.activeFilter() === 'all') {
-      this.http.get<ProjectResponse[]>(`${environment.apiUrl}/users/${encodeURIComponent(username)}/projects/all`).subscribe({
-        next: projects => {
-          this.projects.set(projects);
-          this.isLoading.set(false);
-          this.loadAllTags(projects);
-        },
-        error: () => {
-          this.errorMessage.set('Deine Projekte konnten nicht geladen werden.');
-          this.isLoading.set(false);
-        },
-      });
+      this.http.get<ProjectResponse[]>(`${environment.apiUrl}/users/${encodeURIComponent(username)}/projects/all`).subscribe({ next: onNext, error: onError });
     } else {
-      this.myProjectsService.getMyProjects(username).subscribe({
-        next: projects => {
-          this.projects.set(projects);
-          this.isLoading.set(false);
-          this.loadAllTags(projects);
-        },
-        error: () => {
-          this.errorMessage.set('Deine Projekte konnten nicht geladen werden.');
-          this.isLoading.set(false);
-        },
-      });
+      this.myProjectsService.getMyProjects(username).subscribe({ next: onNext, error: onError });
     }
   }
 
