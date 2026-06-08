@@ -48,7 +48,7 @@
             <app-members-tab [projectId]="project()!.id" />
           }
           @if (activeTab() === 'privacy') {
-            <app-privacy-tab [projectId]="project()!.id" />
+            <app-privacy-tab [project]="project()!" />
           }
           @if (activeTab() === 'danger-zone') {
             <app-danger-zone-tab

@@ -105,8 +105,7 @@ public class ProjectService {
 
 
         projectFavoriteRepository.deleteByProjectId(projectId);
-        project.setDeletedAt(LocalDateTime.now());
-        projectRepository.save(project);
+        projectRepository.delete(project);
 
         return DeleteProjectResponse.builder()
                 .projectId(projectId)
