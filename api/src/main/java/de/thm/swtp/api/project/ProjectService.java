@@ -196,6 +196,14 @@ public class ProjectService {
                 .toList();
     }
 
+    @Transactional
+    public List<ProjectResponse> getAllProjectsByUsername(String username) {
+        return projectRepository.findAllByOwnerOrMemberUsernameAndDeletedAtIsNull(username)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
     private void createProjectInvites(ProjectEntity project, UserProfile owner, Set <UUID> invitedUserIds) {
         if (invitedUserIds == null || invitedUserIds.isEmpty()) {
             return;
