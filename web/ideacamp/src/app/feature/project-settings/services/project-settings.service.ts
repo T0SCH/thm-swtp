@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../enviroments/enviroment.dev';
 import { ProjectMemberResponse } from '../models/project-settings.model'
-import { CreateProjectInviteRequest } from '../../../models/project-invite.model'
+import { CreateProjectInviteRequest, ProjectInviteResponse } from '../../../models/project-invite.model'
 
 @Injectable({ providedIn: 'root' })
 export class ProjectSettingsService {
@@ -25,6 +25,10 @@ export class ProjectSettingsService {
 
   createProjectInvite(projectId: string, request: CreateProjectInviteRequest): Observable<void>{
     return this.http.post<void>(`${this.baseUrlV1}/${projectId}/invitations`, request);
+  }
+
+  getProjectInvites(projectId: string){
+    return this.http.get<ProjectInviteResponse[]>(`${this.baseUrlV1}/${projectId}/invitations`);
   }
 
 }
