@@ -213,11 +213,15 @@
 
             <textarea
               rows="3"
+              maxlength="500"
               [ngModel]="inviteMessage()"
               (ngModelChange)="inviteMessage.set($event)"
               placeholder="Optionale Nachricht hinzufügen..."
               class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-lime-400 focus:outline-none">
             </textarea>
+            <p class="mt-1 text-right text-xs text-slate-400">
+              {{ inviteMessage().length }}/500
+            </p>
           </label>
 
           @if (inviteErrorMessage()) {
