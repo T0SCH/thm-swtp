@@ -6,8 +6,8 @@ import {ProjectResponse} from '../../models/project.model';
 
 export interface CreateProjectRequest {
   name: string;
-  shortDescription: string | null;
-  description?: string | null;
+  shortDescription?: string | null;
+  description: string;
   projectUrl: string;
   isPrivateProject: boolean;
   memberIds: string[];
@@ -16,7 +16,7 @@ export interface CreateProjectRequest {
 
 export interface UpdateProjectRequest {
   name: string;
-  shortDescription: string;
+  shortDescription?: string;
   description: string;
   projectUrl: string;
   isPrivateProject: boolean;
