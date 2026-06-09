@@ -43,7 +43,7 @@ public class ProjectInviteController {
     @GetMapping("/projects/{projectId}/invitations")
     public List<ProjectInviteResponse> getInvitesForProject(@PathVariable UUID projectId, @AuthenticationPrincipal Jwt jwt) {
         UUID currentUserId = UUID.fromString(jwt.getSubject());
-        return projectInviteService.getInvitesForProject(projectId,currentUserId)
+        return projectInviteService.getInvitesForProject(projectId, currentUserId)
                 .stream()
                 .map(ProjectInviteResponse::toResponse)
                 .toList();
