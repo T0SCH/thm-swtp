@@ -32,6 +32,7 @@ export class PrivacyTab implements OnInit {
     this.projectService.updateProject(this.project.id, {
       name: this.project.name,
       description: this.project.description,
+      shortDescription: this.project.shortDescription,
       projectUrl: this.project.projectUrl,
       isPrivateProject: !newIsPublic,
     }).subscribe({
