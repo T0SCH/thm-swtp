@@ -72,7 +72,7 @@ export class MembersTab implements OnChanges {
         this.isDeleting.set(false);
       },
       error: () => {
-        this.errorMessage.set('Could not delete member. Please try again later.');
+        this.errorMessage.set('Mitglied konnte nicht gelöscht werden. Bitte versuchen Sie es gleich nochmal.');
         this.isDeleting.set(false);
       },
     });
@@ -144,7 +144,7 @@ export class MembersTab implements OnChanges {
         this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage.set('Could not load members. Please try again later.');
+        this.errorMessage.set('Mitglieder konnten nicht geladen werden. Bitte versuchen sie es später nochmal.');
         this.isLoading.set(false);
       },
     });
