@@ -11,6 +11,7 @@ import { ProjectTagService, TagResponse } from '../../services/project-tag.servi
 })
 export class TagList implements OnInit, OnChanges {
   private readonly projectTagService = inject(ProjectTagService);
+  private static readonly TAG_PATTERN = /^[a-zA-Z0-9äöüÄÖÜß \-.]+$/;
 
   @Input({ required: true }) projectId?: string;
   @Input() isOwner = false;
@@ -56,6 +57,11 @@ export class TagList implements OnInit, OnChanges {
     if (!projectId) return;
     if (!name) {
       this.cancelAdd();
+      return;
+    }
+
+    if (!TagList.TAG_PATTERN.test(name)) {
+      this.errorMessage.set('Tag enthält ungültige Zeichen. Erlaubt: Buchstaben, Zahlen, Leerzeichen, Bindestrich und Punkt.');
       return;
     }
 
