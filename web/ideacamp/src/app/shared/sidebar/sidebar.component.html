@@ -2,7 +2,7 @@
   <div class="fixed inset-0 z-50">
     <button type="button" aria-label="Close sidebar" class="sidebar-backdrop absolute inset-0" [class.sidebar-backdrop-closing]="isClosing()" (click)="requestClose()"></button>
 
-    <aside class="sidebar-panel absolute left-0 top-0 flex h-full w-80 flex-col border-r border-zinc-700 bg-zinc-800 text-zinc-200 shadow-2xl" [class.sidebar-panel-closing]="isClosing()" (animationend)="onPanelAnimationEnd()">
+    <aside class="sidebar-panel absolute left-0 top-0 flex h-full w-full md:w-80 flex-col border-r border-zinc-700 bg-zinc-800 text-zinc-200 shadow-2xl" [class.sidebar-panel-closing]="isClosing()" (animationend)="onPanelAnimationEnd()">
       <!--Logo-->
       <div class="border-b border-zinc-700 px-6 pb-5 pt-6">
         <div class="flex items-center justify-between text-sm text-zinc-400">
@@ -41,6 +41,12 @@
              <i class="pi pi-heart text-sm text-zinc-400"></i>
              <span>Favoriten</span>
            </app-menu-link>
+          </a>
+          <a [routerLink]="['/profiles', auth.username()]" (click)="requestClose()">
+          <app-menu-link>
+            <i class="pi pi-user text-sm text-zinc-400"></i>
+            <span>My Profile</span>
+          </app-menu-link>
           </a>
           <!--<app-menu-link>
             <i class="pi pi-users text-sm text-zinc-400"></i>
