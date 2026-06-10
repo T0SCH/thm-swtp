@@ -8,12 +8,12 @@ import { ProjectHeader } from './components/project-header/project-header';
 import { InfoCard } from './components/info-card/info-card';
 import { ProjectSidebar } from './components/project-sidebar/project-sidebar';
 import {AuthService} from '../auth/auth.service';
-
+import { SuccessModal } from '../../shared/success-modal/success-modal';
 
 @Component({
   selector: 'app-project-site',
   standalone: true,
-  imports: [ProjectHeader, InfoCard, ProjectSidebar, FormsModule, CommonModule],
+  imports: [ProjectHeader, InfoCard, ProjectSidebar, FormsModule, CommonModule, SuccessModal],
   templateUrl: './project-site.html',
 })
 export class ProjectSite  implements OnInit {
@@ -27,7 +27,7 @@ export class ProjectSite  implements OnInit {
 
   isEditing = signal(false);
   isSaving = signal(false);
-  successMessage = signal<string | null>(null);
+  showSuccessModal = signal(false);
   editName = signal('');
   editShortDescription = signal('');
   editDescription = signal('');
@@ -66,7 +66,7 @@ export class ProjectSite  implements OnInit {
     this.editShortDescription.set(proj.shortDescription ?? '');
     this.editDescription.set(proj.description ?? '');
     this.isEditing.set(true);
-    this.successMessage.set(null);
+    this.showSuccessModal.set(false);
   }
 
   onFavoriteCountChanged(newCount: number): void {
@@ -105,13 +105,16 @@ export class ProjectSite  implements OnInit {
           this.project.set(updated);
           this.isEditing.set(false);
           this.isSaving.set(false);
-          this.successMessage.set('Projekt erfolgreich gespeichert!');
-          setTimeout(() => this.successMessage.set(null), 3000);
+          this.showSuccessModal.set(true);
         },
         error: () => {
           this.errorMessage.set('Projekt konnte nicht gespeichert werden.');
           this.isSaving.set(false);
         },
       });
+  }
+
+  closeSuccessModal(): void {
+    this.showSuccessModal.set(false);
   }
 }

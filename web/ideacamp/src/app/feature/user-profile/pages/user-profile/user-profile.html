@@ -131,32 +131,10 @@
   </main>
 
   @if (showSuccessModal) {
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div class="relative w-full max-w-md rounded-xl bg-white p-6 text-center shadow-xl">
-        <button
-          type="button"
-          class="absolute right-4 top-4 text-slate-400 hover:text-slate-700"
-          (click)="closeSuccessModal()">
-          ✕
-        </button>
-
-        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-          <span class="text-2xl font-bold text-green-600">
-            ✓
-          </span>
-        </div>
-
-        <p class="mb-5 text-lg font-semibold text-slate-900">
-          Profile successfully updated.
-        </p>
-
-        <button
-          type="button"
-          class="rounded-lg bg-slate-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
-          (click)="closeSuccessModal()">
-          Continue
-        </button>
-      </div>
-    </div>
+    <app-success-modal
+      message="Profil erfolgreich geändert."
+      buttonText="Weiter"
+      (closeModal)="closeSuccessModal()">
+    </app-success-modal>
   }
 </div>
