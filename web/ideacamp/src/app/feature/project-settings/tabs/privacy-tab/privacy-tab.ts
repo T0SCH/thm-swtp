@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, inject, signal } from '@angular/core';
-import { ProjectResponse } from '../../../../models/project.model';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { ProjectSettingsStore } from '../../project-settings.store';
 import { ProjectService } from '../../../project-site/project.service';
 
 @Component({
@@ -9,8 +9,7 @@ import { ProjectService } from '../../../project-site/project.service';
   templateUrl: './privacy-tab.html',
 })
 export class PrivacyTab implements OnInit {
-  @Input() project!: ProjectResponse;
-
+  private readonly store = inject(ProjectSettingsStore);
   private readonly projectService = inject(ProjectService);
 
   isPublic = signal(true);
@@ -18,25 +17,34 @@ export class PrivacyTab implements OnInit {
   isSaving = signal(false);
 
   ngOnInit(): void {
-    this.isPublic.set(!this.project.isPrivateProject);
-    this.joinRequestsAllowed.set(this.project.allowJoinRequests);
+    const project = this.store.project();
+    if (project) {
+      this.isPublic.set(!project.isPrivateProject);
+      this.joinRequestsAllowed.set(project.allowJoinRequests);
+    }
   }
 
   togglePublicVisibility(): void {
+    const project = this.store.project();
+    if (!project) return;
+
     const newValue = !this.isPublic();
     this.isPublic.set(newValue);
     this.isSaving.set(true);
 
     this.projectService
-      .updateProject(this.project.id, {
-        name: this.project.name,
-        description: this.project.description,
-        shortDescription: this.project.shortDescription ?? undefined,
-        projectUrl: this.project.projectUrl,
+      .updateProject(project.id, {
+        name: project.name,
+        description: project.description,
+        shortDescription: project.shortDescription ?? undefined,
+        projectUrl: project.projectUrl,
         isPrivateProject: !newValue,
       })
       .subscribe({
-        next: () => this.isSaving.set(false),
+        next: (response) => {
+          this.isSaving.set(false);
+          this.store.setProject(response);
+        },
         error: () => {
           this.isPublic.set(!newValue);
           this.isSaving.set(false);
@@ -45,14 +53,20 @@ export class PrivacyTab implements OnInit {
   }
 
   toggleAllowJoinRequests(): void {
+    const project = this.store.project();
+    if (!project) return;
+
     const newValue = !this.joinRequestsAllowed();
     this.joinRequestsAllowed.set(newValue);
     this.isSaving.set(true);
 
     this.projectService
-      .updateAllowJoinRequests(this.project.id, newValue)
+      .updateAllowJoinRequests(project.id, newValue)
       .subscribe({
-        next: () => this.isSaving.set(false),
+        next: (response) => {
+          this.isSaving.set(false);
+          this.store.setProject(response);
+        },
         error: () => {
           this.joinRequestsAllowed.set(!newValue);
           this.isSaving.set(false);

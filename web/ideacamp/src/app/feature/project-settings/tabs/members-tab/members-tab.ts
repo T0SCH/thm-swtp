@@ -1,8 +1,9 @@
-import { Component, Input, signal, OnChanges, SimpleChanges, inject, computed } from '@angular/core';
+import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProjectMember, ProjectMemberResponse } from '../../models/project-settings.model';
 import { ProjectSettingsService } from '../../services/project-settings.service';
+import { ProjectSettingsStore } from '../../project-settings.store';
 import { UserSearchPick } from '../../../../shared/user-search-pick/user-search-pick';
 import { UserSearchResult } from '../../../search/models/user-search-result.model';
 
@@ -12,13 +13,9 @@ import { UserSearchResult } from '../../../search/models/user-search-result.mode
   imports: [NgClass, FormsModule, UserSearchPick],
   templateUrl: './members-tab.html',
 })
-export class MembersTab implements OnChanges {
+export class MembersTab implements OnInit {
+  private readonly store = inject(ProjectSettingsStore);
   private readonly projectSettingsService = inject(ProjectSettingsService);
-  @Input() projectId = '';
-  @Input() ownerId = '';
-
-
-
 
   members = signal<ProjectMember[]>([]);
   isLoading = signal(false);
@@ -36,18 +33,19 @@ export class MembersTab implements OnChanges {
 
   pendingInvitedUserIds = signal<string[]>([]);
 
-  excludedUserIds = computed(() => [this.ownerId,
-    ... this.members().map((mem) => mem.id),
-    ... this.pendingInvitedUserIds()]);
+  excludedUserIds = computed(() => {
+    const project = this.store.project();
+    if (!project) return [];
+    return [project.ownerId,
+      ...this.members().map((mem) => mem.id),
+      ...this.pendingInvitedUserIds()];
+  });
 
-
-
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['projectId'] && this.projectId) {
-      this.loadMembers();
-      this.loadUserIdPendingInvites();
-    }
+  ngOnInit(): void {
+    const projectId = this.store.project()?.id;
+    if (!projectId) return;
+    this.loadMembers();
+    this.loadUserIdPendingInvites();
   }
 
   openRemoveModal(member: ProjectMember): void {
@@ -60,12 +58,13 @@ export class MembersTab implements OnChanges {
 
   confirmRemove(): void {
     const member = this.memberToRemove();
-    if (!member || !this.projectId || member.role === 'Owner') return;
+    const projectId = this.store.project()?.id;
+    if (!member || !projectId || member.role === 'Owner') return;
 
     this.isDeleting.set(true);
     this.errorMessage.set(null);
 
-    this.projectSettingsService.deleteProjectMember(this.projectId,member.id).subscribe({
+    this.projectSettingsService.deleteProjectMember(projectId, member.id).subscribe({
       next: () => {
         this.members.update((list) => list.filter((mem) => mem.id !== member.id));
         this.memberToRemove.set(null);
@@ -96,21 +95,22 @@ export class MembersTab implements OnChanges {
     this.selectedUserToInvite.set(null);
   }
 
-  selectUserToInvite(user : UserSearchResult): void {
+  selectUserToInvite(user: UserSearchResult): void {
     this.selectedUserToInvite.set(user);
   }
 
   inviteSelectedUser(): void {
     const user = this.selectedUserToInvite();
+    const projectId = this.store.project()?.id;
 
-    if (!user || !this.projectId || this.isInviting()) {
+    if (!user || !projectId || this.isInviting()) {
       return;
     }
 
     this.isInviting.set(true);
     this.inviteErrorMessage.set(null);
 
-    this.projectSettingsService.createProjectInvite(this.projectId,{
+    this.projectSettingsService.createProjectInvite(projectId, {
       invitedUserId: user.keycloakId,
       message: this.inviteMessage().trim() || undefined,
     })
@@ -125,20 +125,21 @@ export class MembersTab implements OnChanges {
             this.inviteSuccessMessage.set(null)
           }, 5000);
         },
-        error : () => {
+        error: () => {
           this.inviteErrorMessage.set('Einladung konnte nicht erstellt werden, bitte versuchen Sie es erneut.');
           this.isInviting.set(false);
         },
       });
   }
 
-
-
   private loadMembers(): void {
+    const projectId = this.store.project()?.id;
+    if (!projectId) return;
+
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    this.projectSettingsService.getProjectMembers(this.projectId).subscribe({
+    this.projectSettingsService.getProjectMembers(projectId).subscribe({
       next: (members) => {
         this.members.set(members.map((member) => this.toProjectMember(member)));
         this.isLoading.set(false);
@@ -147,6 +148,24 @@ export class MembersTab implements OnChanges {
         this.errorMessage.set('Mitglieder konnten nicht geladen werden. Bitte versuchen sie es später nochmal.');
         this.isLoading.set(false);
       },
+    });
+  }
+
+  private loadUserIdPendingInvites(): void {
+    const projectId = this.store.project()?.id;
+    if (!projectId) return;
+
+    this.projectSettingsService.getProjectInvites(projectId).subscribe({
+      next: (invites) => {
+        this.pendingInvitedUserIds.set(
+          invites
+            .filter((invite) => invite.status === 'PENDING')
+            .map((invite) => invite.invitedUserId),
+        );
+      },
+      error: () => {
+        this.pendingInvitedUserIds.set([]);
+      }
     });
   }
 
@@ -161,7 +180,7 @@ export class MembersTab implements OnChanges {
     }
   }
 
-  private getInitials(name : string): string {
+  private getInitials(name: string): string {
     return name.slice(0, 2).toUpperCase();
   }
 
@@ -169,20 +188,5 @@ export class MembersTab implements OnChanges {
     const colors = ['bg-lime-500', 'bg-slate-500', 'bg-rose-500', 'bg-blue-500', 'bg-violet-500'];
     const index = val.length % colors.length;
     return colors[index];
-  }
-
-  private loadUserIdPendingInvites(): void {
-    this.projectSettingsService.getProjectInvites(this.projectId).subscribe({
-      next: (invites) => {
-        this.pendingInvitedUserIds.set(
-          invites
-            .filter((invite) => invite.status === 'PENDING')
-            .map((invite) => invite.invitedUserId),
-        );
-      },
-      error: () => {
-        this.pendingInvitedUserIds.set([]);
-      }
-    });
   }
 }

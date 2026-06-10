@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ProjectJoinRequestService, JoinRequestResponse } from '../../../../services/project-join-request.service';
+import { ProjectSettingsStore } from '../../project-settings.store';
 
 interface DisplayRequest {
   id: string;
@@ -16,15 +17,17 @@ interface DisplayRequest {
   templateUrl: './join-requests-tab.html',
 })
 export class JoinRequestsTab implements OnInit {
-  @Input() projectId = '';
-
+  private readonly store = inject(ProjectSettingsStore);
   private readonly joinRequestService = inject(ProjectJoinRequestService);
 
   requests = signal<DisplayRequest[]>([]);
   loading = signal(true);
 
   ngOnInit(): void {
-    this.joinRequestService.getProjectRequests(this.projectId).subscribe({
+    const projectId = this.store.project()?.id;
+    if (!projectId) return;
+
+    this.joinRequestService.getProjectRequests(projectId).subscribe({
       next: (data) => {
         this.requests.set(data.filter(r => r.status === 'PENDING').map(r => this.toDisplay(r)));
         this.loading.set(false);
