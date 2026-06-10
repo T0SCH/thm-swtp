@@ -2,7 +2,7 @@
 
   <div>
     <label for="project-url" class="mb-1 block text-sm font-medium text-slate-700">
-      Project-URL
+      Projekt-URL (Dein Projekt wird unter /project/dein-input verfügbar sein)
     </label>
 
     <input
@@ -10,8 +10,8 @@
       type="text"
       name="projectUrl"
       [(ngModel)]="formData.projectUrl"
+      placeholder="e.g. mein-projekt"
       (ngModelChange)="onProjectUrlChange($event)"
-      placeholder="project-url"
       class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none"
       [class.border-red-500]="errors.projectUrl || projectUrlExists()"
       [class.border-slate-300]="!errors.projectUrl && !projectUrlExists()"
