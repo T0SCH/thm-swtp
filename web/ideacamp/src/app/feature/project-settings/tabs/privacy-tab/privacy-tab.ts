@@ -1,5 +1,7 @@
-import { Component, Input, OnInit, inject, signal } from '@angular/core';
+import { Component, Input, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { forkJoin, Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { ProjectResponse } from '../../../../models/project.model';
 import { ProjectService } from '../../../project-site/project.service';
 
@@ -17,41 +19,70 @@ export class PrivacyTab implements OnInit {
   isPublic = signal(true);
   joinRequestsAllowed = signal(true);
   isSaving = signal(false);
-  saveError = signal<string | null>(null);
+
+  private originalIsPublic = true;
+  private originalJoinRequestsAllowed = true;
+
+  hasChanges = computed(
+    () =>
+      this.isPublic() !== this.originalIsPublic ||
+      this.joinRequestsAllowed() !== this.originalJoinRequestsAllowed,
+  );
 
   ngOnInit(): void {
-    this.isPublic.set(!this.project.isPrivateProject);
-    this.joinRequestsAllowed.set(this.project.allowJoinRequests);
+    this.originalIsPublic = !this.project.isPrivateProject;
+    this.originalJoinRequestsAllowed = this.project.allowJoinRequests;
+    this.isPublic.set(this.originalIsPublic);
+    this.joinRequestsAllowed.set(this.originalJoinRequestsAllowed);
   }
 
   togglePublicVisibility(): void {
-    const newIsPublic = !this.isPublic();
-    this.isSaving.set(true);
-    this.saveError.set(null);
-
-    this.projectService.updateProject(this.project.id, {
-      name: this.project.name,
-      description: this.project.description,
-      shortDescription: this.project.shortDescription,
-      projectUrl: this.project.projectUrl,
-      isPrivateProject: !newIsPublic,
-    }).subscribe({
-      next: () => {
-        this.isPublic.set(newIsPublic);
-        this.isSaving.set(false);
-      },
-      error: () => {
-        this.saveError.set('Einstellung konnte nicht gespeichert werden.');
-        this.isSaving.set(false);
-      },
-    });
+    this.isPublic.set(!this.isPublic());
   }
 
   toggleAllowJoinRequests(): void {
-    const newValue = !this.joinRequestsAllowed();
-    this.joinRequestsAllowed.set(newValue);
-    this.projectService.updateAllowJoinRequests(this.project.id, newValue).subscribe({
-      error: () => this.joinRequestsAllowed.set(!newValue),
+    this.joinRequestsAllowed.set(!this.joinRequestsAllowed());
+  }
+
+  saveSettings(): void {
+    if (!this.hasChanges() || this.isSaving()) return;
+
+    this.isSaving.set(true);
+
+    const calls: Observable<ProjectResponse>[] = [];
+
+    if (this.isPublic() !== this.originalIsPublic) {
+      calls.push(
+        this.projectService.updateProject(this.project.id, {
+          name: this.project.name,
+          description: this.project.description,
+          shortDescription: this.project.shortDescription ?? undefined,
+          projectUrl: this.project.projectUrl,
+          isPrivateProject: !this.isPublic(),
+        }),
+      );
+    }
+
+    if (this.joinRequestsAllowed() !== this.originalJoinRequestsAllowed) {
+      calls.push(
+        this.projectService.updateAllowJoinRequests(
+          this.project.id,
+          this.joinRequestsAllowed(),
+        ),
+      );
+    }
+
+    forkJoin(calls).pipe(
+      finalize(() => this.isSaving.set(false)),
+    ).subscribe({
+      next: () => {
+        this.originalIsPublic = this.isPublic();
+        this.originalJoinRequestsAllowed = this.joinRequestsAllowed();
+      },
+      error: () => {
+        this.isPublic.set(this.originalIsPublic);
+        this.joinRequestsAllowed.set(this.originalJoinRequestsAllowed);
+      },
     });
   }
 }

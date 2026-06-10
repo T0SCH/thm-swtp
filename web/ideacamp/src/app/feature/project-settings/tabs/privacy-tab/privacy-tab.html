@@ -15,7 +15,7 @@
           }
         </p>
       </div>
-      <label class="relative inline-flex cursor-pointer items-center" [class.opacity-50]="isSaving()">
+      <label class="relative inline-flex cursor-pointer items-center">
         <input
           type="checkbox"
           class="peer sr-only"
@@ -33,12 +33,6 @@
       </label>
     </div>
 
-    @if (saveError()) {
-      <div class="px-5 py-3 text-sm text-red-600 bg-red-50">
-        {{ saveError() }}
-      </div>
-    }
-
     <div class="flex items-center justify-between px-5 py-4">
       <div>
         <p class="text-sm font-medium text-slate-800">Beitrittsanfragen zulassen</p>
@@ -49,6 +43,7 @@
           type="checkbox"
           class="peer sr-only"
           [checked]="joinRequestsAllowed()"
+          [disabled]="isSaving()"
           (change)="toggleAllowJoinRequests()"
         />
         <div class="relative h-6 w-11 rounded-full bg-slate-200 transition-colors
@@ -62,4 +57,18 @@
     </div>
 
   </div>
+
 </div>
+
+<button
+  (click)="saveSettings()"
+  [disabled]="!hasChanges() || isSaving()"
+  class="fixed bottom-6 right-6 flex items-center gap-2 rounded-lg bg-slate-800 px-5 py-3 text-sm font-medium text-white shadow-lg transition-opacity disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-700"
+>
+  @if (isSaving()) {
+    <i class="pi pi-spin pi-spinner"></i>
+  } @else {
+    <i class="pi pi-save"></i>
+  }
+  Speichern
+</button>
