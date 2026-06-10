@@ -41,13 +41,13 @@
       </div>
 
       <p class="mt-4 text-sm text-slate-600">
-        Wenn du <strong>{{ projectName }}</strong> endgültig löschst, werden alle Ideen, Mitglieder und Einstellungen gelöscht werden.
+        Wenn du <strong>{{ projectName() }}</strong> endgültig löschst, werden alle Ideen, Mitglieder und Einstellungen gelöscht werden.
         Die Daten können nicht wiederhergestellt werden.
       </p>
 
       <div class="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2">
         <p class="text-xs text-red-600">
-         Um diese Aktion zu bestätigen bitte tippe das ein <strong>{{ projectName }}</strong> .
+         Um diese Aktion zu bestätigen bitte tippe das ein <strong>{{ projectName() }}</strong> .
         </p>
       </div>
 
@@ -55,7 +55,7 @@
         type="text"
         [value]="deleteConfirmInput()"
         (input)="deleteConfirmInput.set($any($event.target).value)"
-        [placeholder]="projectName"
+        [placeholder]="projectName()"
         class="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none"
       />
 

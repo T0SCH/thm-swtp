@@ -1,25 +1,25 @@
 <div class="min-h-screen bg-slate-100 text-slate-700">
 
-  @if (isLoading()) {
+  @if (store.isLoading()) {
     <div class="flex items-center justify-center py-20">
       <p class="text-slate-500">Lädt…</p>
     </div>
   }
 
-  @if (!isLoading() && errorMessage()) {
+  @if (!store.isLoading() && store.errorMessage()) {
     <div class="mx-auto max-w-5xl px-6 py-10">
       <div class="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700">
         <p class="font-semibold">Ein unerwarteter Fehler ist aufgetreten</p>
-        <p class="mt-1 text-sm">{{ errorMessage() }}</p>
+        <p class="mt-1 text-sm">{{ store.errorMessage() }}</p>
       </div>
     </div>
   }
 
-  @if (!isLoading() && project()) {
+  @if (!store.isLoading() && store.project()) {
     <div class="mx-auto max-w-5xl px-6 py-10">
 
       <a
-        [routerLink]="['/project', project()!.projectUrl]"
+        [routerLink]="['/project', store.project()!.projectUrl]"
         class="mb-6 inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100 hover:text-lime-500"
       >
         <i class="pi pi-arrow-left text-sm text-zinc-400"></i>
@@ -51,21 +51,16 @@
 
         <main class="flex-1 min-w-0">
           @if (activeTab() === 'join-requests') {
-            <app-join-requests-tab [projectId]="project()!.id" />
+            <app-join-requests-tab />
           }
           @if (activeTab() === 'members') {
-            <app-members-tab [projectId]="project()!.id"
-            [ownerId]="project()!.ownerId"
-            />
+            <app-members-tab />
           }
           @if (activeTab() === 'privacy') {
-            <app-privacy-tab [project]="project()!" />
+            <app-privacy-tab />
           }
           @if (activeTab() === 'danger-zone') {
-            <app-danger-zone-tab
-              [projectId]="project()!.id"
-              [projectName]="project()!.name"
-            />
+            <app-danger-zone-tab />
           }
         </main>
 

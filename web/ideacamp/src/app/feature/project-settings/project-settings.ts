@@ -2,8 +2,8 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { ProjectService } from '../project-site/project.service';
-import { ProjectResponse } from '../../models/project.model';
 import { AuthService } from '../auth/auth.service';
+import { ProjectSettingsStore } from './project-settings.store';
 import { JoinRequestsTab } from './tabs/join-requests-tab/join-requests-tab';
 import { MembersTab } from './tabs/members-tab/members-tab';
 import { PrivacyTab } from './tabs/privacy-tab/privacy-tab';
@@ -22,24 +22,22 @@ export class ProjectSettings implements OnInit {
   private readonly router = inject(Router);
   private readonly projectService = inject(ProjectService);
   private readonly authService = inject(AuthService);
+  readonly store = inject(ProjectSettingsStore);
 
-  project = signal<ProjectResponse | null>(null);
-  isLoading = signal(true);
-  errorMessage = signal<string | null>(null);
   activeTab = signal<Tab>('join-requests');
 
   readonly tabs: { id: Tab; label: string; icon: string }[] = [
     { id: 'join-requests', label: 'Beitrittsanfragen', icon: 'pi-user-plus' },
     { id: 'members',       label: 'Mitglieder',       icon: 'pi-user'      },
-    { id: 'privacy',       label: 'Privatsphäre',       icon: 'pi-lock'      },
+    { id: 'privacy',       label: 'Privatsphäre',      icon: 'pi-lock'      },
     { id: 'danger-zone',   label: 'Projekt Löschen',   icon: 'pi-trash'     },
   ];
 
   ngOnInit(): void {
     const projectUrl = this.route.snapshot.paramMap.get('projectUrl');
     if (!projectUrl) {
-      this.errorMessage.set('Keine Projekt URL gegeben.');
-      this.isLoading.set(false);
+      this.store.setError('Keine Projekt URL gegeben.');
+      this.store.setLoading(false);
       return;
     }
 
@@ -50,12 +48,12 @@ export class ProjectSettings implements OnInit {
           this.router.navigateByUrl(`/project/${data.projectUrl}`);
           return;
         }
-        this.project.set(data);
-        this.isLoading.set(false);
+        this.store.setProject(data);
+        this.store.setLoading(false);
       },
       error: () => {
-        this.errorMessage.set('Projekt konnte nicht geladen werden.');
-        this.isLoading.set(false);
+        this.store.setError('Projekt konnte nicht geladen werden.');
+        this.store.setLoading(false);
       },
     });
   }
