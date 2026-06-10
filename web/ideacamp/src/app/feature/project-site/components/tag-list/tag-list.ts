@@ -10,6 +10,7 @@ import { EditableTagListComponent } from '../../../../shared/tags/tag-list/edita
 })
 export class TagList implements OnInit, OnChanges {
   private readonly projectTagService = inject(ProjectTagService);
+  private static readonly TAG_PATTERN = /^[a-zA-Z0-9äöüÄÖÜß \-.]+$/;
 
   @Input({ required: true }) projectId?: string;
   @Input() isOwner = false;
@@ -41,6 +42,10 @@ export class TagList implements OnInit, OnChanges {
       return;
     }
 
+    if (!TagList.TAG_PATTERN.test(name)) {
+      this.errorMessage.set('Tag enthält ungültige Zeichen. Erlaubt: Buchstaben, Zahlen, Leerzeichen, Bindestrich und Punkt.');
+      return;
+    }
 
     this.isSaving.set(true);
     this.errorMessage.set(null);
