@@ -16,7 +16,7 @@ export interface CreateProjectRequest {
 
 export interface UpdateProjectRequest {
   name: string;
-  shortDescription: string;
+  shortDescription?: string;
   description: string;
   projectUrl: string;
   isPrivateProject: boolean;

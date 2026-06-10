@@ -77,7 +77,7 @@ public class ProjectService {
         }
 
         UserProfile owner = userProfileRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User profile not found for username: " + username));
+                .orElseThrow(() -> new UserProfileNotFoundException(username));
 
         ProjectEntity project = ProjectEntity.builder()
                 .name(request.name())
@@ -105,14 +105,15 @@ public class ProjectService {
             throw new ExceptionProjectAlreadyDeleted(projectId);
         }
 
-        userProfileRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User profile not found for username: " + username));
+        UserProfile requester = userProfileRepository.findByUsername(username)
+                .orElseThrow(() -> new UserProfileNotFoundException(username));
 
-
+        if (!project.getOwner().getKeycloakId().equals(requester.getKeycloakId())) {
+            throw new ExceptionProjectDeleteNotAllowed(requester.getKeycloakId(), projectId);
+        }
 
         projectFavoriteRepository.deleteByProjectId(projectId);
-        project.setDeletedAt(LocalDateTime.now());
-        projectRepository.save(project);
+        projectRepository.delete(project);
 
         return DeleteProjectResponse.builder()
                 .projectId(projectId)
@@ -172,10 +173,12 @@ public class ProjectService {
             throw new ExceptionProjectAlreadyDeleted(projectId);
         }
 
-        userProfileRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User profile not found for username: " + username));
+        UserProfile requester = userProfileRepository.findByUsername(username)
+                .orElseThrow(() -> new UserProfileNotFoundException(username));
 
-
+        if (!project.getOwner().getKeycloakId().equals(requester.getKeycloakId())) {
+            throw new ExceptionProjectEditNotAllowed(requester.getKeycloakId(), projectId);
+        }
 
         if (request.getName() != null &&
                 !request.getName().equals(project.getName()) &&
