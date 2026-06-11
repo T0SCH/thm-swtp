@@ -1,0 +1,11 @@
+<app-editable-tag-list
+  title="Tags"
+  [tags]="tags()"
+  [isOwner]="isOwner"
+  [isLoading]="isLoading()"
+  [isSaving]="isSaving()"
+  [isDeleting]="isDeleting()"
+  [errorMessage]="errorMessage()"
+  (addTag)="saveTag($event)"
+  (deleteTag)="deleteTag($event)">
+</app-editable-tag-list>

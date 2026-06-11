@@ -1,0 +1,56 @@
+package de.thm.swtp.api.project;
+
+import de.thm.swtp.api.userprofile.entity.UserProfile;
+import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class ProjectEntityTest {
+
+    @Test
+    void shouldBuildProject() {
+        UserProfile owner = UserProfile.builder()
+                .keycloakId(UUID.randomUUID())
+                .username("testowner")
+                .email("testowner@mni.thm.de")
+                .build();
+
+        ProjectEntity project = ProjectEntity.builder()
+                .name("Testprojekt")
+                .description("Eine Beschreibung")
+                .shortDescription("Short")
+                .projectUrl("testprojekt")
+                .isPrivateProject(false)
+                .owner(owner)
+                .build();
+
+        assertThat(project.getName()).isEqualTo("Testprojekt");
+        assertThat(project.getShortDescription()).isEqualTo("Short");
+        assertThat(project.getOwner()).isEqualTo(owner);
+        assertThat(project.getMembers()).isNotNull();
+        assertThat(project.isPrivateProject()).isFalse();
+        assertThat(project.getOpenPositionsCount()).isZero();
+    }
+
+    @Test
+    void shouldBuildProjectWithStats() {
+        UserProfile owner = UserProfile.builder()
+                .keycloakId(UUID.randomUUID())
+                .username("testowner")
+                .email("testowner@mni.thm.de")
+                .build();
+
+        ProjectEntity project = ProjectEntity.builder()
+                .name("Testprojekt")
+                .description("Eine Beschreibung")
+                .projectUrl("testprojekt")
+                .isPrivateProject(false)
+                .owner(owner)
+                .openPositionsCount(3)
+                .build();
+
+        assertThat(project.getOpenPositionsCount()).isEqualTo(3);
+    }
+}
