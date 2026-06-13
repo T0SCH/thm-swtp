@@ -30,7 +30,7 @@
 (let [{:keys [out exit]} (sh "sudo" "docker" "compose" "config" "--services" {:dir stack-dir})]
   (when (= 0 exit)
     (let [services (str/split-lines (str/trim out))
-          {:keys [out pull-out]} (sh "sudo" "docker" "compose" "pull" {:dir stack-dir})]
+          {:keys [pull-out]} (sh "sudo" "docker" "compose" "pull" {:dir stack-dir})]
       (doseq [svc services]
         (cond
           (str/includes? pull-out (str svc " Pulled"))

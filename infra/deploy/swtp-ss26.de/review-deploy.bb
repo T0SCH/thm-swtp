@@ -17,18 +17,18 @@
 (def logfile "/opt/stacks/swtp/deploy.log")
 ;; ──────────────────────────────────────────────────────────────────────────────
 
+;; Parse args
+(def args (filter #(not (str/blank? %)) *command-line-args*))
+(def pr-num (first args))
+(def services (rest args))
+
 (defn now-str []
   (-> (sh "date" "+%Y-%m-%d %H:%M:%S") :out str/trim))
 
 (defn log [msg]
-  (spit logfile (str "[" (now-str) "] [PR-" pr "] " msg "\n") :append true))
+  (spit logfile (str "[" (now-str) "] [PR-" pr-num "] " msg "\n") :append true))
 
-;; Parse args
-(def args (filter #(not (str/blank? %)) *command-line-args*))
-(def pr (first args))
-(def services (rest args))
-
-(when (or (nil? pr) (empty? services))
+(when (or (nil? pr-num) (empty? services))
   (binding [*out* *err*]
     (println "Usage: review-deploy.bb <pr-number> <api|web> [api|web]"))
   (System/exit 1))
@@ -36,9 +36,9 @@
 (log (str "Review deploy triggered (services: " (str/join " " services) ")"))
 
 (defn deploy-web []
-  (let [name (str "swtp-web-pr-" pr)
-        host (str "pr-" pr "." domain)
-        image (str registry "/swtp-web:pr-" pr)]
+  (let [name (str "swtp-web-pr-" pr-num)
+        host (str "pr-" pr-num "." domain)
+        image (str registry "/swtp-web:pr-" pr-num)]
     (log "Pulling frontend image...")
     (sh "sudo" "docker" "pull" image)
     (log "Starting frontend container...")
@@ -47,7 +47,7 @@
         "--name" name
         "--network" traefik-network
         "--restart" "unless-stopped"
-        "--label" (str "traefik.enable=true")
+        "--label" "traefik.enable=true"
         "--label" (str "traefik.http.routers." name ".entrypoints=websecure")
         "--label" (str "traefik.http.routers." name ".rule=Host(`" host "`)")
         "--label" (str "traefik.http.routers." name ".tls=true")
@@ -58,9 +58,9 @@
     (log (str "Frontend live → https://" host))))
 
 (defn deploy-api []
-  (let [name (str "swtp-api-pr-" pr)
-        host (str "pr-" pr "-api." domain)
-        image (str registry "/swtp-api:pr-" pr)]
+  (let [name (str "swtp-api-pr-" pr-num)
+        host (str "pr-" pr-num "-api." domain)
+        image (str registry "/swtp-api:pr-" pr-num)]
     (log "Pulling backend image...")
     (sh "sudo" "docker" "pull" image)
     (log "Starting backend container...")
@@ -71,7 +71,7 @@
         "--network" "review_net"
         "--restart" "unless-stopped"
         "--env-file" "/opt/stacks/swtp/review.env"
-        "--label" (str "traefik.enable=true")
+        "--label" "traefik.enable=true"
         "--label" (str "traefik.http.routers." name ".entrypoints=websecure")
         "--label" (str "traefik.http.routers." name ".rule=Host(`" host "`)")
         "--label" (str "traefik.http.routers." name ".tls=true")
