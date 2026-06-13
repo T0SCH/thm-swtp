@@ -83,9 +83,22 @@ jobs:
       (needs.build-backend.result == 'success' || needs.build-frontend.result == 'success')
     runs-on: ubuntu-latest
     steps:
+      - name: Resolve deploy target
+        id: target
+        run: |
+          case "${{ github.ref_name }}" in
+            main)    echo "cmd=deploy-main" >> $GITHUB_OUTPUT ;;
+            developer) echo "cmd=deploy-dev" >> $GITHUB_OUTPUT ;;
+            *)
+              echo "cd-build-deploy only runs on main/developer branches" >&2
+              exit 1
+              ;;
+          esac
+
       - name: Trigger deploy via SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key -p 2105 tosch@mail.schalz.de
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key -p 2105 tosch@mail.schalz.de \
+            "${{ steps.target.outputs.cmd }}"

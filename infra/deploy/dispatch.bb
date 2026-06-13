@@ -5,19 +5,24 @@
 ;;   command="/opt/stacks/swtp/dispatch.bb" ssh-ed25519 ...
 ;;
 ;; Dispatches based on SSH_ORIGINAL_COMMAND:
-;;   (no command)               → production deploy
+;;   (no command)               → deploy-dev (default)
+;;   deploy-dev                 → deploy swtp-dev stack
+;;   deploy-main                → deploy swtp-main stack
 ;;   review-deploy <pr> <svcs>  → spin up review environment
 ;;   review-teardown <pr>       → tear down review environment
 
 (require '[babashka.process :refer [exec]]
-         '[clojure.string   :as str])
+         '[clojure.string :as str])
 
 (def cmd (System/getenv "SSH_ORIGINAL_COMMAND"))
 
 (defn dispatch [s]
   (cond
-    (or (nil? s) (= s "deploy"))
-    (exec "/opt/stacks/swtp/deploy.sh")
+    (or (nil? s) (= s "") (= s "deploy-dev"))
+    (exec "/opt/stacks/swtp/deploy.sh" "swtp-dev")
+
+    (= s "deploy-main")
+    (exec "/opt/stacks/swtp/deploy.sh" "swtp-main")
 
     (str/starts-with? s "review-deploy ")
     (apply exec "/opt/stacks/swtp/review-deploy.sh"

@@ -2,20 +2,25 @@
 # /opt/stacks/swtp/dispatch.sh
 #
 # Forced command for the deploy SSH key in authorized_keys:
-#   command="/opt/stacks/swtp/dispatch.sh" ssh-rsa ...
+#   command="/opt/stacks/swtp/dispatch.sh" ssh-ed25519 ...
 #
 # Dispatches based on SSH_ORIGINAL_COMMAND:
-#   (no command)               → production deploy
+#   (no command)               → deploy-dev (default)
+#   deploy-dev                 → deploy swtp-dev stack
+#   deploy-main                → deploy swtp-main stack
 #   review-deploy <pr> <svcs>  → spin up review environment
 #   review-teardown <pr>       → tear down review environment
 
 set -e
 
-CMD="${SSH_ORIGINAL_COMMAND:-deploy}"
+CMD="${SSH_ORIGINAL_COMMAND:-deploy-dev}"
 
 case "$CMD" in
-  deploy)
-    exec /opt/stacks/swtp/deploy.sh
+  deploy-dev)
+    exec /opt/stacks/swtp/deploy.sh swtp-dev
+    ;;
+  deploy-main)
+    exec /opt/stacks/swtp/deploy.sh swtp-main
     ;;
   "review-deploy "*)
     ARGS="${CMD#review-deploy }"

@@ -1,12 +1,22 @@
 #!/usr/bin/env bb
-;; /opt/stacks/swtp/deploy.bb
-;; Production deploy — pull images, restart services.
+;; /opt/stacks/<stack>/deploy.bb <stack-name>
+;; Usage: deploy.bb swtp-dev   or   deploy.bb swtp-main
+;;
+;; Production deploy for a specific stack — pull images, restart services.
 
 (require '[babashka.process :refer [sh exec]]
          '[clojure.string :as str])
 
-(def dir "/opt/stacks/swtp")
-(def logfile (str dir "/deploy.log"))
+(def args (filter #(not (str/blank? %)) *command-line-args*))
+(def stack (first args))
+
+(when (nil? stack)
+  (binding [*out* *err*]
+    (println "Usage: deploy.bb <stack-name>"))
+  (System/exit 1))
+
+(def stack-dir (str "/opt/stacks/" stack))
+(def logfile (str stack-dir "/deploy.log"))
 
 (defn now-str []
   (-> (sh "date" "+%Y-%m-%d %H:%M:%S") :out str/trim))
@@ -14,20 +24,23 @@
 (defn log [msg]
   (spit logfile (str "[" (now-str) "] " msg "\n") :append true))
 
-(log "Deploy triggered")
+(log (str "Deploy triggered (stack: " stack ")"))
 
-;; Pull images
-(let [{:keys [out]} (sh "sudo" "docker" "compose" "pull" "swtp-api" "swtp-web" {:dir dir})]
-  (doseq [svc ["swtp-api" "swtp-web"]]
-    (cond
-      (str/includes? out (str svc " Pulled"))
-      (log (str svc ": updated"))
+;; Discover services from compose file
+(let [{:keys [out exit]} (sh "sudo" "docker" "compose" "config" "--services" {:dir stack-dir})]
+  (when (= 0 exit)
+    (let [services (str/split-lines (str/trim out))
+          {:keys [out pull-out]} (sh "sudo" "docker" "compose" "pull" {:dir stack-dir})]
+      (doseq [svc services]
+        (cond
+          (str/includes? pull-out (str svc " Pulled"))
+          (log (str svc ": updated"))
 
-      (str/includes? out (str svc " up to date"))
-      (log (str svc ": up-to-date"))
+          (str/includes? pull-out (str svc " up to date"))
+          (log (str svc ": up-to-date"))
 
-      :else
-      (log (str svc ": check output")))))
+          :else
+          (log (str svc ": check output"))))))
 
 (log "Restarting services")
-(exec "sudo" "docker" "compose" "up" "-d" "swtp-api" "swtp-web" {:dir dir})
+(exec "sudo" "docker" "compose" "up" "-d" {:dir stack-dir})
