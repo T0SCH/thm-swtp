@@ -21,7 +21,7 @@ SERVICES="$*"   # e.g. "api web" or just "api" or "web"
 
 # ── Config ────────────────────────────────────────────────────────────────────
 TRAEFIK_NETWORK="traefik-net"          # docker network Traefik listens on
-CERTRESOLVER="letsencrypt"         # name of your Traefik certresolver
+CERTRESOLVER="letsencrypt-inwx"         # name of your Traefik certresolver
 DOMAIN="review.swtp-ss26.de"
 REGISTRY="ghcr.io/mlanima"
 LOG="/opt/stacks/swtp/deploy.log"
