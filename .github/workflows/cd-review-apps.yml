@@ -82,6 +82,8 @@ jobs:
         with:
           context: ./web/ideacamp
           push: true
+          build-args: |
+            API_URL=https://pr-${{ github.event.pull_request.number }}-api.review.swtp-ss26.de/api
           tags: ghcr.io/${{ needs.namespace.outputs.namespace }}/swtp-web:pr-${{ github.event.pull_request.number }}
 
   # ── Deploy review environment ──────────────────────────────────────────────

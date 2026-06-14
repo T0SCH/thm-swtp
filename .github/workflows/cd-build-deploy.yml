@@ -81,6 +81,8 @@ jobs:
         with:
           context: ./web/ideacamp
           push: true
+          build-args: |
+            API_URL=${{ github.ref_name == 'main' && 'https://api.swtp-ss26.de/api' || 'https://api.dev.swtp-ss26.de/api' }}
           tags: |
             ghcr.io/${{ needs.namespace.outputs.namespace }}/swtp-web:${{ github.ref_name == 'main' && 'latest' || 'dev' }}
             ghcr.io/${{ needs.namespace.outputs.namespace }}/swtp-web:${{ github.run_number }}
