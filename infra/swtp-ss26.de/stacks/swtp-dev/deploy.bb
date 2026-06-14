@@ -19,15 +19,14 @@
 ;; Pull images
 (let [{:keys [out err]} (sh ["docker" "compose" "-f" (str script-dir "/docker-compose.yml") "pull"] {:dir script-dir})
       combined (str out "\n" err)]
-  (log (str "Pull output:\n" combined))
-  (doseq [svc ["swtp-dev-api" "swtp-dev-web"]]
+  (doseq [[svc image] [["swtp-dev-api" "swtp-api"] ["swtp-dev-web" "swtp-web"]]]
     (cond
-      (re-find (re-pattern (str "(?s)" svc ".*Downloaded newer image")) combined)
-      (log (str svc ": updated"))
-      (re-find (re-pattern (str "(?s)" svc ".*Image is up to date")) combined)
+      (re-find (re-pattern (str image ":dev Pulled")) combined)
+      (log (str svc ": pulled"))
+      (re-find (re-pattern (str image ":dev Skipped")) combined)
       (log (str svc ": up-to-date"))
       :else
-      (log (str svc ": check output")))))
+      (log (str svc ": check output\n" combined)))))
 
 (log "Restarting services")
 (sh ["docker" "compose" "-f" (str script-dir "/docker-compose.yml") "up" "-d"] {:dir script-dir})
