@@ -35,6 +35,25 @@ services:
       - traefik-net
     restart: unless-stopped
 
+  swtp-main-dozzle:
+    image: amir20/dozzle:latest
+    container_name: swtp-main-dozzle
+    environment:
+      DOZZLE_FILTER: name=swtp-main
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-net
+      - traefik.http.routers.swtp-main-dozzle.rule=Host(`logs.swtp-ss26.de`)
+      - traefik.http.routers.swtp-main-dozzle.entrypoints=websecure
+      - traefik.http.routers.swtp-main-dozzle.tls.certresolver=letsencrypt-inwx
+      - traefik.http.routers.swtp-main-dozzle.service=swtp-main-dozzle
+      - traefik.http.services.swtp-main-dozzle.loadbalancer.server.port=8080
+    networks:
+      - traefik-net
+    restart: unless-stopped
+
 networks:
   traefik-net:
     external: true
