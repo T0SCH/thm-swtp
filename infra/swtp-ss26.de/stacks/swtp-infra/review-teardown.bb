@@ -1,5 +1,5 @@
 #!/usr/bin/env bb
-;; /opt/stacks/swtp/review-teardown.bb <namespace> <pr-number>
+;; /opt/stacks/swtp-infra/review-teardown.bb <namespace> <pr-number>
 ;;
 ;; Removes containers and images for a PR review environment.
 ;; Called automatically when a PR is closed or merged.
@@ -12,7 +12,7 @@
 (def namespace (first args))
 (def pr-num (second args))
 (def registry (str "ghcr.io/" namespace))
-(def logfile "/opt/stacks/swtp/deploy.log")
+(def logfile "/opt/stacks/swtp-infra/deploy.log")
 
 (defn now-str []
   (-> (sh "date" "+%Y-%m-%d %H:%M:%S") :out str/trim))

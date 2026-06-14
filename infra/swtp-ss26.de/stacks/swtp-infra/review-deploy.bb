@@ -1,5 +1,5 @@
 #!/usr/bin/env bb
-;; /opt/stacks/swtp/review-deploy.bb <namespace> <pr-number>
+;; /opt/stacks/swtp-infra/review-deploy.bb <namespace> <pr-number>
 ;;
 ;; Spins up per-PR containers (web + api) routed via Traefik.
 ;; URLs:
@@ -13,7 +13,7 @@
 (def traefik-network "traefik-net")
 (def certresolver "letsencrypt-inwx")
 (def domain "review.swtp-ss26.de")
-(def logfile "/opt/stacks/swtp/deploy.log")
+(def logfile "/opt/stacks/swtp-infra/deploy.log")
 ;; ──────────────────────────────────────────────────────────────────────────────
 
 ;; Parse args
@@ -70,7 +70,7 @@
         "--network" traefik-network
         "--network" "review_net"
         "--restart" "unless-stopped"
-        "--env-file" "/opt/stacks/swtp/review.env"
+        "--env-file" "/opt/stacks/swtp-infra/review.env"
         "--label" "traefik.enable=true"
         "--label" (str "traefik.http.routers." name ".entrypoints=websecure")
         "--label" (str "traefik.http.routers." name ".rule=Host(`" host "`)")

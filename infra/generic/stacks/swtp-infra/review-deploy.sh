@@ -1,5 +1,5 @@
 #!/bin/bash
-# /opt/stacks/swtp/review-deploy.sh <namespace> <pr-number>
+# /opt/stacks/swtp-infra/review-deploy.sh <namespace> <pr-number>
 #
 # Spins up per-PR containers (web + api) routed via Traefik.
 # URLs:
@@ -16,7 +16,7 @@ REGISTRY="ghcr.io/${NAMESPACE}"
 TRAEFIK_NETWORK="traefik-net"
 CERTRESOLVER="letsencrypt-inwx"
 DOMAIN="review.swtp-ss26.de"
-LOG="/opt/stacks/swtp/deploy.log"
+LOG="/opt/stacks/swtp-infra/deploy.log"
 # ──────────────────────────────────────────────────────────────────────────────
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] [PR-${PR}] $1" >> "$LOG"; }
@@ -67,7 +67,7 @@ deploy_api() {
     --network "$TRAEFIK_NETWORK" \
     --network review_net \
     --restart unless-stopped \
-    --env-file /opt/stacks/swtp/review.env \
+    --env-file /opt/stacks/swtp-infra/review.env \
     --label "traefik.enable=true" \
     --label "traefik.http.routers.${name}.entrypoints=websecure" \
     --label "traefik.http.routers.${name}.rule=Host(\`${host}\`)" \
