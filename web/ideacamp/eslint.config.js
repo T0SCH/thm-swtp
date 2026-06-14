@@ -1,5 +1,4 @@
 // @ts-check
-// ESLint configuration for the Angular/TypeScript frontend
 const eslint = require('@eslint/js');
 const { defineConfig } = require('eslint/config');
 const tseslint = require('typescript-eslint');
