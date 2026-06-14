@@ -1,5 +1,5 @@
 #!/bin/bash
-# /opt/stacks/swtp/review-teardown.sh <namespace> <pr-number>
+# /opt/stacks/swtp-infra/review-teardown.sh <namespace> <pr-number>
 #
 # Removes containers and images for a PR review environment.
 # Called automatically when a PR is closed or merged.
@@ -9,7 +9,7 @@ set -e
 NAMESPACE="$1"
 PR="$2"
 REGISTRY="ghcr.io/${NAMESPACE}"
-LOG="/opt/stacks/swtp/deploy.log"
+LOG="/opt/stacks/swtp-infra/deploy.log"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] [PR-${PR}] $1" >> "$LOG"; }
 
