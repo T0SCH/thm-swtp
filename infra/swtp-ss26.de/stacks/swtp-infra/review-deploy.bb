@@ -190,10 +190,29 @@
         (log (str "Keycloak client update FAILED: " (:status resp) " " (:body resp)))
         (System/exit 1)))))
 
+;; ── active-prs.txt: PR-Tracking für Backup-Restart ──────────────────────────
+;; Backup-Script stoppt (Step 02) alle laufenden Container, restartet (Step 06b)
+;; aber nur, was hier gelistet ist. Ohne Eintrag bleibt die Review-App nach
+;; einem Backup-Lauf down (vgl. CD Review-Apps – Konzept & Vorgehen, Punkt 1).
+
+(def active-prs-file (str script-dir "/active-prs.txt"))
+
+(defn register-active-pr! []
+  (let [entry (str "pr-" pr-num)
+        existing (if (.exists (java.io.File. active-prs-file))
+                   (->> (slurp active-prs-file) str/split-lines (remove str/blank?) set)
+                   #{})]
+    (if (contains? existing entry)
+      (log "active-prs.txt: entry already present")
+      (do
+        (spit active-prs-file (str entry "\n") :append true)
+        (log "active-prs.txt: entry added")))))
+
 (clone-db!)
 (deploy-web)
 (deploy-api)
 (add-pr-redirect!)
+(register-active-pr!)
 
 (log "Review deploy complete")
 (spit logfile "----------------------------------------\n" :append true)
