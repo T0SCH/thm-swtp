@@ -68,6 +68,7 @@ deploy_api() {
     --network review_net \
     --restart unless-stopped \
     --env-file /opt/stacks/swtp-infra/review.env \
+    -e "SPRING_DATASOURCE_URL=jdbc:mysql://swtp-db:3306/swtp_pr_${PR}" \
     --label "traefik.enable=true" \
     --label "traefik.http.routers.${name}.entrypoints=websecure" \
     --label "traefik.http.routers.${name}.rule=Host(\`${host}\`)" \

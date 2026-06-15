@@ -1,4 +1,4 @@
-// Trigger PR review build
+// Trigger PR review build (retry)
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
