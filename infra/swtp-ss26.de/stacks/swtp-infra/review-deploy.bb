@@ -16,6 +16,7 @@
 (def certresolver "letsencrypt-inwx")
 (def domain "review.swtp-ss26.de")
 (def logfile "/opt/stacks/swtp-infra/deploy.log")
+(def dashboard-file "/opt/stacks/swtp-infra/dashboard/data.json")
 (def script-dir (-> (sh "dirname" (System/getProperty "babashka.file")) :out str/trim))
 (def kc-base "https://auth.swtp-ss26.de")
 (def kc-realm "swtp")
@@ -234,12 +235,29 @@
         (spit active-prs-file (str entry "\n") :append true)
         (log "active-prs.txt: entry added")))))
 
+;; ── Dashboard aktualisieren ──────────────────────────────────────────────────
+
+(defn update-dashboard! [path entry]
+  (let [data (if (.exists (java.io.File. dashboard-file))
+               (json/parse-string (slurp dashboard-file))
+               {})
+        updated (assoc-in data (mapv str path) (assoc entry "updated_at" (now-str)))]
+    (spit dashboard-file (json/generate-string updated {:pretty true}))))
+
+(defn register-dashboard! []
+  (update-dashboard! ["prs" pr-num]
+    {"fe" (str "https://pr-" pr-num "." domain)
+     "be" (str "https://pr-" pr-num "-api." domain)
+     "logs" (str "https://pr-" pr-num "-logs." domain)
+     "pr_url" (str "https://github.com/" namespace "/thm-swtp/pull/" pr-num)}))
+
 (clone-db!)
 (deploy-web)
 (deploy-api)
 (deploy-dozzle)
 (add-pr-redirect!)
 (register-active-pr!)
+(register-dashboard!)
 
 (log "Review deploy complete")
 (spit logfile "----------------------------------------\n" :append true)
