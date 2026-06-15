@@ -43,3 +43,4 @@ Läuft dann auf `http://localhost:8080`.
 
 `src/main/resources/application.yaml` — Keycloak `issuer-uri` und SQLite-Pfad bei Bedarf anpassen.
 
+
