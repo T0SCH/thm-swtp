@@ -42,6 +42,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(List.of(
             "https://*.swtp-ss26.de",
+            "https://*.review.swtp-ss26.de",
             "https://swtp-ss26.de",
             "http://localhost:4200"
         ));
