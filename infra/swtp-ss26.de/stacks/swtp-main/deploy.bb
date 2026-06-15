@@ -3,10 +3,12 @@
 ;; Pulls :latest images and restarts the swtp-main stack.
 
 (require '[babashka.process :refer [sh]]
+         '[cheshire.core :as json]
          '[clojure.string :as str])
 
 (def script-dir (-> (sh "dirname" (System/getProperty "babashka.file")) :out str/trim))
 (def logfile (str script-dir "/deploy.log"))
+(def dashboard-file "/opt/stacks/swtp-infra/dashboard/data.json")
 
 (defn now-str []
   (-> (sh "date" "+%Y-%m-%d %H:%M:%S") :out str/trim))
@@ -40,5 +42,19 @@
 
 (log "Restarting services")
 (sh ["docker" "compose" "-f" (str script-dir "/docker-compose.yml") "up" "-d"] {:dir script-dir})
+
+;; ── Dashboard aktualisieren ──────────────────────────────────────────────────
+(defn update-dashboard! [path entry]
+  (let [data (if (.exists (java.io.File. dashboard-file))
+               (json/parse-string (slurp dashboard-file))
+               {})
+        updated (assoc-in data (mapv str path) (assoc entry "updated_at" (now-str)))]
+    (spit dashboard-file (json/generate-string updated {:pretty true}))))
+
+(update-dashboard! ["main"]
+  {"fe" "https://www.swtp-ss26.de"
+   "be" "https://api.swtp-ss26.de"
+   "logs" "https://logs.swtp-ss26.de"})
+
 (log "Deploy complete")
 (spit logfile "----------------------------------------\n" :append true)

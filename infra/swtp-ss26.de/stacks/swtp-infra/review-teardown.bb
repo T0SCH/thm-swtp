@@ -15,6 +15,7 @@
 (def pr-num (second args))
 (def registry (str "ghcr.io/" namespace))
 (def logfile "/opt/stacks/swtp-infra/deploy.log")
+(def dashboard-file "/opt/stacks/swtp-infra/dashboard/data.json")
 (def script-dir (-> (sh "dirname" (System/getProperty "babashka.file")) :out str/trim))
 (def domain "review.swtp-ss26.de")
 (def kc-base "https://auth.swtp-ss26.de")
@@ -135,6 +136,14 @@
       (spit active-prs-file (str (str/join "\n" remaining) (when (seq remaining) "\n")))
       (log "active-prs.txt: entry removed"))
     (log "active-prs.txt: file not found, skipping")))
+
+;; ── Dashboard: PR-Eintrag entfernen ─────────────────────────────────────────
+(let [data (if (.exists (java.io.File. dashboard-file))
+             (json/parse-string (slurp dashboard-file))
+             {})
+      updated (update data "prs" dissoc pr-num)]
+  (spit dashboard-file (json/generate-string updated {:pretty true}))
+  (log "Dashboard: PR-Eintrag entfernt"))
 
 (log "Teardown complete")
 (spit logfile "----------------------------------------\n" :append true)
