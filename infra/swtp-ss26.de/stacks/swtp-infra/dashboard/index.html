@@ -197,33 +197,38 @@ function section(title, html) {
   return `<div class="section"><h2>${title}</h2><div class="grid">${html}</div></div>`;
 }
 
-fetch("data.json?_=" + Date.now())
-  .then(r => r.json())
-  .then(data => {
-    let out = "";
+function refresh() {
+  fetch("data.json?_=" + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      let out = "";
 
-    out += section("Hauptumgebungen", [
-      card("Main", data.main),
-      card("Dev", data.dev)
-    ].filter(Boolean).join(""));
+      out += section("Hauptumgebungen", [
+        card("Main", data.main),
+        card("Dev", data.dev)
+      ].filter(Boolean).join(""));
 
-    const prs = Object.entries(data.prs || {})
-      .sort((a, b) => Number(b[0]) - Number(a[0]));
+      const prs = Object.entries(data.prs || {})
+        .sort((a, b) => Number(b[0]) - Number(a[0]));
 
-    if (prs.length) {
-      out += section("Review-Apps", prs.map(([num, env]) => card(`PR #${num}`, env)).join(""));
-    } else {
-      out += section("Review-Apps", `<div class="empty">Aktuell keine offenen Review-Apps</div>`);
-    }
+      if (prs.length) {
+        out += section("Review-Apps", prs.map(([num, env]) => card(`PR #${num}`, env)).join(""));
+      } else {
+        out += section("Review-Apps", `<div class="empty">Aktuell keine offenen Review-Apps</div>`);
+      }
 
-    document.getElementById("content").innerHTML = out;
-    document.getElementById("footer").textContent =
-      "Aktualisiert automatisch durch deploy.bb / review-deploy.bb / review-teardown.bb · geladen " + new Date().toLocaleString("de-DE");
-  })
-  .catch(err => {
-    document.getElementById("content").innerHTML =
-      `<div class="empty">data.json konnte nicht geladen werden (${err})</div>`;
-  });
+      document.getElementById("content").innerHTML = out;
+      document.getElementById("footer").textContent =
+        "Aktualisiert automatisch durch deploy.bb / review-deploy.bb / review-teardown.bb · geladen " + new Date().toLocaleString("de-DE");
+    })
+    .catch(err => {
+      document.getElementById("content").innerHTML =
+        `<div class="empty">data.json konnte nicht geladen werden (${err})</div>`;
+    });
+}
+
+refresh();
+setInterval(refresh, 60000);
 </script>
 </body>
 </html>
