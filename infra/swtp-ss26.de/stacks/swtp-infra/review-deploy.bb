@@ -80,6 +80,7 @@
         "--network" "review_net"
         "--restart" "unless-stopped"
         "--env-file" "/opt/stacks/swtp-infra/review.env"
+        "-e" (str "SPRING_DATASOURCE_URL=jdbc:mysql://swtp-db:3306/" db-name)
         "--label" "traefik.enable=true"
         "--label" (str "pr=" pr-num)
         "--label" (str "traefik.http.routers." name ".entrypoints=websecure")
