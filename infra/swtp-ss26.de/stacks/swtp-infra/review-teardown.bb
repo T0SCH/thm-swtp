@@ -118,5 +118,17 @@
                     (log (str "Keycloak: removed " kc-redirect-uri " / " kc-web-origin))
                     (log (str "Keycloak client update FAILED: " (:status update-resp) " " (:body update-resp)))))))))))))
 
+;; ── active-prs.txt: PR-Tracking für Backup-Restart entfernen ────────────────
+(let [active-prs-file (str script-dir "/active-prs.txt")
+      entry (str "pr-" pr-num)]
+  (if (.exists (java.io.File. active-prs-file))
+    (let [remaining (->> (slurp active-prs-file)
+                          str/split-lines
+                          (remove str/blank?)
+                          (remove #(= % entry)))]
+      (spit active-prs-file (str (str/join "\n" remaining) (when (seq remaining) "\n")))
+      (log "active-prs.txt: entry removed"))
+    (log "active-prs.txt: file not found, skipping")))
+
 (log "Teardown complete")
 (spit logfile "----------------------------------------\n" :append true)
