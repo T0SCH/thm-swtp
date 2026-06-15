@@ -248,7 +248,7 @@
 (defn register-dashboard! []
   (update-dashboard! ["prs" pr-num]
     {"fe" (str "https://pr-" pr-num "." domain)
-     "be" (str "https://pr-" pr-num "-api." domain)
+     "be" (str "https://pr-" pr-num "-api." domain "/swagger-ui/index.html")
      "logs" (str "https://pr-" pr-num "-logs." domain)
      "pr_url" (str "https://github.com/" namespace "/thm-swtp/pull/" pr-num)}))
 

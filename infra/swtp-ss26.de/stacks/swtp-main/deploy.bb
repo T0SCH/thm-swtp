@@ -53,7 +53,7 @@
 
 (update-dashboard! ["main"]
   {"fe" "https://www.swtp-ss26.de"
-   "be" "https://api.swtp-ss26.de"
+   "be" "https://api.swtp-ss26.de/swagger-ui/index.html"
    "logs" "https://logs.swtp-ss26.de"})
 
 (log "Deploy complete")
