@@ -150,6 +150,7 @@
     margin-top: 3rem;
   }
 </style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237c5cff'/><text x='16' y='23' text-anchor='middle' font-size='22' font-weight='700' fill='white' font-family='sans-serif'>?</text></svg>">
 </head>
 <body>
 <header>
@@ -197,6 +198,37 @@ function section(title, html) {
   return `<div class="section"><h2>${title}</h2><div class="grid">${html}</div></div>`;
 }
 
+function updateFavicon(count) {
+  const size = 32;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+
+  // rounded rect background
+  ctx.beginPath();
+  ctx.roundRect(0, 0, size, size, 8);
+  ctx.fillStyle = "#7c5cff";
+  ctx.fill();
+
+  // count text
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 20px -apple-system, BlinkMacSystemFont, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  const text = count > 99 ? "99+" : String(count);
+  ctx.fillText(text, size / 2, size / 2 + 1);
+
+  // update favicon link
+  let link = document.querySelector("link[rel=icon]");
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "icon";
+    document.head.appendChild(link);
+  }
+  link.href = canvas.toDataURL("image/png");
+}
+
 function refresh() {
   fetch("data.json?_=" + Date.now())
     .then(r => r.json())
@@ -210,6 +242,9 @@ function refresh() {
 
       const prs = Object.entries(data.prs || {})
         .sort((a, b) => Number(b[0]) - Number(a[0]));
+
+      const prCount = prs.length;
+      updateFavicon(prCount);
 
       if (prs.length) {
         out += section("Review-Apps", prs.map(([num, env]) => card(`PR #${num}`, env)).join(""));
