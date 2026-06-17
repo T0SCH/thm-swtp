@@ -186,8 +186,7 @@
 (defn- clone-db!
   "Clones swtp_template into a per-PR database (CREATE + GRANT + mysqldump | mysql).
    MySQL has no CREATE DATABASE ... LIKE-with-data, so we dump and restore.
-   Uses raw sh instead of docker! for mysqldump/restore so we can inspect
-   exit codes and pipe dump output through :in."
+   Uses raw sh instead of docker! so we can inspect exit codes and pipe via :in."
   [db-name db-app-user template-db db-root-pw]
   (let [my! (partial mysql! db-root-pw)]
     (log (str "Cloning DB (" template-db " -> " db-name ") ..."))
@@ -195,11 +194,15 @@
     (my! (str "GRANT ALL PRIVILEGES ON `" db-name "`.* TO '" db-app-user "'@'%'; FLUSH PRIVILEGES;"))
 
     (let [dump (sh ["sudo" "docker" "exec" "-e" (str "MYSQL_PWD=" db-root-pw)
-                    "swtp-db" "mysqldump" "-uroot" "--set-gtid-purged=OFF" template-db])]
+                    "swtp-db" "mysqldump" "-uroot"
+                    "--set-gtid-purged=OFF" "--hex-blob" "--default-character-set=binary"
+                    template-db]
+                   {:out :bytes})]
       (when-not (zero? (:exit dump))
         (throw (ex-info (str "mysqldump FAILED: " (:err dump)) {:step "mysqldump"})))
       (let [restore (sh ["sudo" "docker" "exec" "-e" (str "MYSQL_PWD=" db-root-pw)
-                         "-i" "swtp-db" "mysql" "-uroot" db-name]
+                         "-i" "swtp-db" "mysql" "-uroot"
+                         "--default-character-set=binary" db-name]
                         {:in (:out dump)})]
         (when-not (zero? (:exit restore))
           (throw (ex-info (str "mysql restore FAILED: " (:err restore)) {:step "mysql restore"})))))
