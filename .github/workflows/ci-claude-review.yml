@@ -22,6 +22,19 @@ jobs:
         with:
           fetch-depth: 1
 
+      # remove the previous Claude comments before each re-review so the PR
+      # history stays clean and resolved findings don't pile up.
+      - name: Purge previous Claude comments
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          # Inline review comments from the Claude bot
+          gh api --paginate "repos/$REPO/pulls/$PR/comments" \
+            --jq '.[] | select(.user.login=="claude[bot]") | .id' \
+            | while read -r id; do gh api -X DELETE "repos/$REPO/pulls/comments/$id" || true; done
+
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
