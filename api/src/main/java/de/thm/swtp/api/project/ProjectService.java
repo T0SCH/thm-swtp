@@ -86,9 +86,6 @@ public class ProjectService {
             if (!ProjectUrlUtils.isValidUrl(request.projectUrl())) {
                 throw new ExceptionInvalidProjectUrl(request.projectUrl());
             }
-            if (projectRepository.existsByProjectUrl(request.projectUrl())) {
-                throw new ExceptionProjectUrlAlreadyExists(request.projectUrl());
-            }
             projectUrl = request.projectUrl();
         }
 
