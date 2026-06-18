@@ -34,9 +34,6 @@ public class ProjectEntity {
     @Column(name = "short_description", length = 200)
     private String shortDescription;
 
-    @Column(name = "tagline", length = 100)
-    private String tagline;
-
     @Column(name = "project_url", nullable = false, length = 30)
     private String projectUrl;
 
