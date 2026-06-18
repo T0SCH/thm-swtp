@@ -37,8 +37,6 @@ export class ProjectSettingsForm implements OnChanges, OnDestroy {
   projectUrlExists = signal(false);
   projectUrlCheckError = signal<string | null>(null);
 
-  private urlManuallyChanged = false;
-
   constructor() {
     this.projectUrlSubscription = this.createProjectUrlSubscription();
   }
@@ -52,8 +50,6 @@ export class ProjectSettingsForm implements OnChanges, OnDestroy {
         projectUrl: '',
         isPrivateProject: this.initialFormData.isPrivateProject ?? false,
       };
-
-      this.urlManuallyChanged = false;
 
       if (existingUrl) {
         this.formData.projectUrl = existingUrl;
@@ -95,7 +91,6 @@ export class ProjectSettingsForm implements OnChanges, OnDestroy {
   }
 
   onProjectUrlChange(projectUrl: string): void {
-    this.urlManuallyChanged = true;
     this.formData.projectUrl = projectUrl;
     this.triggerUrlCheck(projectUrl);
   }
