@@ -5,7 +5,7 @@ import {ProjectCreateData} from '../schemas/project-create.schema';
 import {FormErrors, mapZodErrors} from '../schemas/zod-error.helper';
 import {catchError, debounceTime, distinctUntilChanged, of, Subject, Subscription, switchMap} from 'rxjs';
 import {ProjectService} from '../../project-site/project.service';
-import {generateProjectSlug} from '../project-url.utils';
+import {generateProjectUrl} from '../project-url.utils';
 
 type SettingsFormFields = 'projectUrl' | 'isPrivateProject';
 
@@ -59,7 +59,7 @@ export class ProjectSettingsForm implements OnChanges, OnDestroy {
         this.formData.projectUrl = existingUrl;
         this.triggerUrlCheck(existingUrl);
       } else if (projectName) {
-        const generatedUrl = generateProjectSlug(projectName);
+        const generatedUrl = generateProjectUrl(projectName);
         this.formData.projectUrl = generatedUrl;
         this.triggerUrlCheck(generatedUrl);
       }

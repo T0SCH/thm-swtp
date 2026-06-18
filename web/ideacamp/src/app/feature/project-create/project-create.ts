@@ -11,7 +11,7 @@ import {ProjectFinishForm} from './project-finish-form/project-finish-form';
 import { ProjectService } from '../project-site/project.service';
 
 import {ProjectGeneralData, ProjectSettingsData, ProjectCreateData, projectCreateSchema} from './schemas/project-create.schema';
-import {generateProjectSlug} from './project-url.utils';
+import {generateProjectUrl} from './project-url.utils';
 import {ProjectInviteMember } from '../../models/project-invite-member.model';
 
 @Component({
@@ -59,10 +59,7 @@ export class ProjectCreate {
   saveGeneralFormAndContinue(data: ProjectGeneralData) {
     const oldName = this.projectData.name;
     const currentUrl = this.projectData.projectUrl ?? '';
-
-    // If the name changed and the stored URL still matches the old auto-generated slug,
-    // clear it so the settings form regenerates the URL from the new name.
-    if (oldName && data.name !== oldName && currentUrl === generateProjectSlug(oldName)) {
+    if (oldName && data.name !== oldName && currentUrl === generateProjectUrl(oldName)) {
       this.projectData = { ...this.projectData, ...data, projectUrl: '' };
     } else {
       this.projectData = { ...this.projectData, ...data };

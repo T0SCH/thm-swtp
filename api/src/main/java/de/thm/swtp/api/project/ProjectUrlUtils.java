@@ -16,7 +16,7 @@ public final class ProjectUrlUtils {
 
     private ProjectUrlUtils() {}
 
-    public static String generateSlug(String name) {
+    public static String generateProjectUrl(String name) {
         if (name == null || name.isBlank()) {
             return "";
         }

@@ -160,8 +160,8 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(404, "Not Found", ex.getMessage()));
     }
 
-    @ExceptionHandler(InvalidProjectUrlException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidProjectUrl(InvalidProjectUrlException ex) {
+    @ExceptionHandler(ExceptionInvalidProjectUrl.class)
+    public ResponseEntity<ErrorResponse> handleInvalidProjectUrl(ExceptionInvalidProjectUrl ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.of(400, "Bad Request", ex.getMessage()));
     }

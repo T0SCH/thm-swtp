@@ -3,7 +3,7 @@ const UMLAUT_MAP: Record<string, string> = {
   'Ä': 'ae', 'Ö': 'oe', 'Ü': 'ue',
 };
 
-export function generateProjectSlug(name: string): string {
+export function generateProjectUrl(name: string): string {
   return name
     .replace(/[äöüßÄÖÜ]/g, char => UMLAUT_MAP[char] ?? char)
     .toLowerCase()

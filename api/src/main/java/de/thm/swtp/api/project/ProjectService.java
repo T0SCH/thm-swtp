@@ -81,10 +81,10 @@ public class ProjectService {
 
         String projectUrl;
         if (request.projectUrl() == null || request.projectUrl().isBlank()) {
-            projectUrl = resolveUniqueUrl(ProjectUrlUtils.generateSlug(request.name()));
+            projectUrl = resolveUniqueUrl(ProjectUrlUtils.generateProjectUrl(request.name()));
         } else {
             if (!ProjectUrlUtils.isValidUrl(request.projectUrl())) {
-                throw new InvalidProjectUrlException(request.projectUrl());
+                throw new ExceptionInvalidProjectUrl(request.projectUrl());
             }
             projectUrl = request.projectUrl();
         }
@@ -232,7 +232,7 @@ public class ProjectService {
         }
         if (request.getProjectUrl() != null) {
             if (!ProjectUrlUtils.isValidUrl(request.getProjectUrl())) {
-                throw new InvalidProjectUrlException(request.getProjectUrl());
+                throw new ExceptionInvalidProjectUrl(request.getProjectUrl());
             }
             project.setProjectUrl(request.getProjectUrl());
         }
