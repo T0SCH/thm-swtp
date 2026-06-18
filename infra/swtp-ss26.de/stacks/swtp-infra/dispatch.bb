@@ -71,8 +71,8 @@
   [cmd]
   (let [[head & rest] (tokenize cmd)]
     (case head
-      (nil "deploy-dev") [(str stacks-dir "/swtp-dev/deploy.bb")]
-      "deploy-main"      [(str stacks-dir "/swtp-main/deploy.bb")]
+      (nil "deploy-dev") [(str infra-dir "/deploy-app.bb") "dev"]
+      "deploy-main"      [(str infra-dir "/deploy-app.bb") "main"]
       "review-deploy"    (into [(str infra-dir "/review-deploy.bb")]
                                (review-args "review-deploy" rest))
       "review-teardown"  (into [(str infra-dir "/review-teardown.bb")]
