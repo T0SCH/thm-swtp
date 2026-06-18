@@ -52,7 +52,6 @@ jobs:
                           Change im Diff). Neutral, keine Aktion gefordert.
             - 🟢 grün   = bemerkenswert, aber unkritisch: etwas Auffälliges, das bewusst
                           oder sauber gelöst ist und der Reviewer NICHT prüfen muss.
-            Kein generisches Lob: 🟢 nur, wenn der Punkt konkret bemerkenswert ist.
             Gibt es nichts Graues/Grünes, lass diese Zeilen einfach weg.
 
             Poste KEINE GitHub-Kommentare und erstelle KEINE Inline-Review-Kommentare.
